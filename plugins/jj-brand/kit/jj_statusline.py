@@ -53,6 +53,43 @@ def git(cwd, *args, timeout=0.4):
         return None
 
 
+def _active():
+    try:
+        return (HOME / ".claude/themes/jack-and-jill.json").read_text()
+    except Exception:
+        return ""
+
+
+def audit():
+    """Every slot this strip draws with, measured against both grounds. A field
+    whose colour is chosen wrongly for the ground shows up here as a number
+    under 4.5 rather than as an invisible word on someone's screen."""
+    pal = json.loads((DIR / "palette-data.json").read_text())
+    def lum(h):
+        f = lambda i: (lambda c: c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4)(int(h[i:i+2], 16) / 255)
+        return 0.2126 * f(1) + 0.7152 * f(3) + 0.0722 * f(5)
+    def cr(a, b):
+        la, lb = lum(a), lum(b)
+        hi, lo = max(la, lb), min(la, lb)
+        return (hi + 0.05) / (lo + 0.05)
+    fields = [("mark", "redBright"), ("model", None), ("project", "blackBright"),
+              ("branch clean", "green"), ("branch dirty", "yellow"),
+              ("context", "blue"), ("context low", "red"), ("spend", "blackBright"),
+              ("added", "green"), ("removed", "red"), ("ground", "magenta")]
+    bad = 0
+    for slug, t in pal.items():
+        light = t["base"] == "light-ansi"
+        ground, slots = t["ground"], t["slots"]
+        print(f"{t['name']}  ground {ground}")
+        for name, slot in fields:
+            s = ("black" if light else "white") if slot is None else slot
+            r = cr(slots[s], ground)
+            flag = "" if r >= 4.5 else "   BELOW 4.5"
+            if r < 4.5: bad += 1
+            print(f"   {name:14} {s:12} {slots[s]}  {r:6.2f}:1{flag}")
+    return 1 if bad else 0
+
+
 def main():
     try:
         raw = sys.stdin.read()
@@ -67,13 +104,19 @@ def main():
         except Exception:
             pass
 
+    # Which ground is on decides the primary ink. Hardcoding `white` put the
+    # model name at 1.07:1 on Paper: Clay on Paper is invisible. Every slot this
+    # strip uses is now chosen by ground, and --audit measures all of them.
+    light = "light-ansi" in _active()
+    INK = "black" if light else "white"
+
     parts = []
 
     # The mark, in Claude's own accent: Coral on Black, burnt Coral on Paper.
     model = dig(d, "display_name", "displayName") or dig(d, "model") or ""
     if isinstance(model, dict):
         model = model.get("display_name") or model.get("id") or ""
-    parts.append(c("redBright", "✻") + " " + c("white", str(model) or "Claude"))
+    parts.append(c("redBright", "✻") + " " + c(INK, str(model) or "Claude"))
 
     # Where you are. The project's own name, not the whole path.
     cwd = dig(d, "current_dir", "cwd", "project_dir") or os.getcwd()
@@ -117,14 +160,12 @@ def main():
     if add or rem:
         parts.append(c("green", f"+{add or 0}") + " " + c("red", f"-{rem or 0}"))
 
-    # Which ground is on, so the strip says what the Dock icon last did.
-    try:
-        active = (HOME / ".claude/themes/jack-and-jill.json").read_text()
-        parts.append(c("magenta", "☾" if "light-ansi" not in active else "☀"))
-    except Exception:
-        pass
+    # Which ground is on, so the strip says what the last flip did.
+    parts.append(c("magenta", "☀" if light else "☾"))
 
     sys.stdout.write(c("blackBright", "  ").join(parts))
 
 
+if "--audit" in sys.argv:
+    sys.exit(audit())
 main()

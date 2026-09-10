@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jack &amp; Jill for the terminal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#f9f9f6; --clay:#f2f2eb; --black:#010101; --dove:#abacbb;
+    --bg:var(--paper); --surface:var(--clay); --ink:var(--black);
+    --ink-2:#5b5b57; --ink-3:#87877f; --rule:#e0dfd6; --rule-2:#cfcec2;
+    --accent:#c24f01; --link:#0056ff; --ok:#348300; --bad:#df2501;
+    --sans:"Schibsted Grotesk",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#080808; --surface:#111110; --ink:var(--paper); --ink-2:#a3a39c; --ink-3:#75756f;
+      --rule:#232322; --rule-2:#33332f; --accent:#ff8042; --link:#88a5ff; --ok:#27d271; --bad:#ff8042;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#080808; --surface:#111110; --ink:var(--paper); --ink-2:#a3a39c; --ink-3:#75756f;
+    --rule:#232322; --rule-2:#33332f; --accent:#ff8042; --link:#88a5ff; --ok:#27d271; --bad:#ff8042;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-variant-numeric:tabular-nums}
+  .wrap{max-width:1120px;margin:0 auto;padding:56px 28px 96px;display:flex;flex-direction:column;gap:56px}
+
+  header{display:flex;flex-direction:column;gap:14px;max-width:64ch}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  h1{font-size:38px;line-height:1.08;font-weight:500;margin:0;letter-spacing:-.018em;text-wrap:balance}
+  .lede{font-size:17px;color:var(--ink-2);margin:0;text-wrap:pretty}
+  .meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--mono);font-size:12px;color:var(--ink-3);
+        border-top:1px solid var(--rule);padding-top:12px;margin-top:4px}
+  .meta b{font-weight:500;color:var(--ink-2)}
+
+  h2{font-size:13px;font-family:var(--mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--ink-3);margin:0 0 18px;padding-bottom:9px;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column}
+  p{margin:0 0 14px;max-width:66ch;color:var(--ink-2)}
+  p.tight{margin-bottom:0}
+  strong{font-weight:500;color:var(--ink)}
+  code{font-family:var(--mono);font-size:.9em;color:var(--ink)}
+
+  /* -- specimens: each paints its own ground, because a swatch cannot borrow
+        the page's theme and still be a swatch -- */
+  .specimens{display:grid;grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:26px}
+  .spec{border:1px solid var(--rule-2);border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .spec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+             padding:11px 14px;border-bottom:1px solid var(--rule);background:var(--surface)}
+  .spec-head .t{font-size:14px}
+  .spec-head .s{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+  .term{font-family:var(--mono);font-size:12px;line-height:1.85;padding:14px;overflow-x:auto}
+  .term .ln{white-space:pre}
+  .term .box{border:1px solid;border-radius:2px;padding:2px 8px;margin:5px 0}
+  .term .df{margin:0 -14px;padding:0 14px}
+  .term .agents span{margin-right:2px}
+  .cur{display:inline-block;width:.62em}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  .slots{font-family:var(--mono);font-size:11.5px}
+  .slots td{padding:3.5px 6px;border-bottom:1px solid var(--rule);white-space:nowrap}
+  .slots tr:last-child td{border-bottom:0}
+  .chip{display:inline-block;width:13px;height:13px;border-radius:2px;vertical-align:-2px;
+        box-shadow:inset 0 0 0 1px rgba(128,128,128,.35)}
+  .chip.lg{width:26px;height:13px;margin-right:7px}
+  .ix{color:var(--ink-3);text-align:right;width:1%}
+  .nm{color:var(--ink)}
+  .nm.dim,.dim{color:var(--ink-3)}
+  .hx{color:var(--ink-2)}
+  .og{color:var(--accent)}
+  .og.drv{color:var(--ink-3)}
+  .rt{text-align:right;font-family:var(--mono);color:var(--ink)}
+  .scroll{overflow-x:auto}
+
+  /* -- role map -- */
+  .roles td{padding:5px 10px;border-bottom:1px solid var(--rule);font-size:12.5px;vertical-align:middle}
+  .roles .hx,.roles .og,.roles .nm{font-family:var(--mono);font-size:11.5px}
+  .roles tr.grp td{padding:16px 10px 5px;border-bottom:1px solid var(--rule-2);
+                   font-family:var(--sans);font-size:13px;color:var(--ink)}
+  .roles thead th{text-align:left;padding:0 10px 7px;font-family:var(--mono);font-size:11px;
+                  letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:400;
+                  border-bottom:1px solid var(--rule-2)}
+  .roles .sw{white-space:nowrap}
+
+  /* -- contrast -- */
+  .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:30px}
+  .floors{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-2);
+          margin-bottom:22px}
+  .floors div{display:flex;flex-direction:column;gap:2px}
+  .floors b{font-size:19px;font-weight:500;color:var(--ink);font-family:var(--sans)}
+  .cap{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+       color:var(--ink-3);margin-bottom:9px}
+  .tight td{padding:4px 8px;border-bottom:1px solid var(--rule);font-size:12px}
+  .tight .nm{font-family:var(--mono);font-size:11.5px}
+  .bar{width:34%}
+  .bar span{display:block;height:5px;border-radius:3px;min-width:2px}
+
+  /* -- install -- */
+  ol{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:20px}
+  ol li{counter-increment:s;display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:start}
+  ol li::before{content:counter(s);font-family:var(--mono);font-size:11.5px;color:var(--ink-3);
+                border:1px solid var(--rule-2);border-radius:50%;width:22px;height:22px;
+                display:grid;place-items:center;margin-top:1px}
+  ol li h3{margin:0 0 4px;font-size:15px;font-weight:500}
+  ol li p{margin:0 0 8px}
+  pre{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+      padding:9px 12px;overflow-x:auto;font-family:var(--mono);font-size:12px;color:var(--ink)}
+  a{color:var(--link);text-decoration-thickness:1px;text-underline-offset:2px}
+  a:focus-visible,li:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+  footer{border-top:1px solid var(--rule);padding-top:16px;font-family:var(--mono);font-size:11.5px;
+         color:var(--ink-3);display:flex;flex-direction:column;gap:5px}
+  @media (max-width:640px){h1{font-size:29px}.wrap{padding:36px 18px 64px;gap:44px}}
+</style>
+</head>
+<body style="margin:0">
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Claude Code theme · Terminal.app profile</div>
+    <h1>Jack &amp; Jill for the terminal</h1>
+    <p class="lede">The monochromes and the magic six, spent on a terminal: sixteen ANSI slots, seventy-two
+      Claude Code roles, and a contrast floor that every one of them is measured against rather than assumed to clear, derived from <code>lib/brand.ts</code>, so the brand stays the single source of truth.</p>
+    <div class="meta">
+      <span><b>14/16</b> slots are literal brand hexes on Black</span>
+      <span><b>78 + 78</b> pairs measured</span>
+      <span><b>0</b> below floor</span>
+      <span><b>AA</b> 4.5 text · 3.0 UI</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Two grounds</h2>
+    <p>The magic six were lit for a dark ground, which is why almost nothing has to move on Black and almost everything does on Paper. Hue is the source of truth there and lightness is derived, which is the move
+      <code>autoBaseColor</code> and <code>tierLighting</code> already make in the studio. On Paper the
+      <em>bright</em> tier is the darker one: on a light ground, stronger means more ink.</p>
+    <div class="specimens">
+      <div class="spec">
+        <div class="spec-head"><span class="t">Jack &amp; Jill Dark</span>
+          <span class="s">ground #010101 · cursor #ff8042</span></div>
+        <div class="term" style="background:#010101;color:#f2f2eb">
+<div class="ln"><span style="color:#ff8042">✻</span> <span style="color:#74747e">Welcome back. 6 gates, 78 measured pairs</span></div>
+<div class="ln box" style="border-color:#65666e"><span style="color:#595962">&gt;</span> run the export gate<span class="cur" style="background:#ff8042;color:#010101">&nbsp;</span></div>
+<div class="ln"><span style="color:#f97cde">│</span> <span style="color:#f2f2eb">Bash</span><span style="color:#74747e">(pnpm check:export)</span></div>
+<div class="ln"><span style="color:#f97cde">│</span> <span style="color:#74747e">406 grid + 360 iso components compiled</span></div>
+<div class="ln"><span style="color:#ffc1ee">✦</span> <span style="color:#f2f2eb">Skill</span> <span style="color:#74747e">artifact-design</span></div>
+<div class="ln"><span style="color:#88a5ff">?</span> <span style="color:#88a5ff">Allow Write to lib/grid/palette.ts?</span></div>
+<div class="ln"><span style="color:#27d271">✔</span> 72 roles set <span style="color:#fa2a00">✗</span> 0 below floor <span style="color:#ffd862">⚠</span> translucent ground, ratios unmeasurable</div>
+<div class="ln df" style="background:#002f13"><span style="color:#e5ffd2">+</span> magic: { colors: MAGIC_COLORS, onset: 0.72 }</div>
+<div class="ln df" style="background:#42160e"><span style="color:#ff8042">-</span> magic: { colors: MAGIC_COLORS, onset: 0.64 }</div>
+<div class="ln agents"><span style="color:#fa2a00">●</span><span style="color:#ff8042">●</span><span style="color:#ffd862">●</span><span style="color:#27d271">●</span><span style="color:#88a5ff">●</span><span style="color:#00ccfa">●</span><span style="color:#ffc1ee">●</span><span style="color:#f97cde">●</span> <span style="color:#74747e">eight agents, eight labels</span></div>
+<div class="ln"><span style="color:#00ccfa">⏸ plan mode</span> <span style="color:#ffc1ee">⏵⏵ accept edits</span></div>
+</div>
+        <div class="scroll"><table class="slots"><tr><td class="ix">0</td><td class="ix">30</td><td><span class="chip" style="background:#010101"></span></td><td class="nm">black</td><td class="hx">#010101</td><td class="og">Black</td><td class="rt">1.00</td></tr>
+<tr><td class="ix">1</td><td class="ix">31</td><td><span class="chip" style="background:#fa2a00"></span></td><td class="nm">red</td><td class="hx">#fa2a00</td><td class="og">Flame</td><td class="rt">5.36</td></tr>
+<tr><td class="ix">2</td><td class="ix">32</td><td><span class="chip" style="background:#27d271"></span></td><td class="nm">green</td><td class="hx">#27d271</td><td class="og">Emerald</td><td class="rt">10.48</td></tr>
+<tr><td class="ix">3</td><td class="ix">33</td><td><span class="chip" style="background:#ffd862"></span></td><td class="nm">yellow</td><td class="hx">#ffd862</td><td class="og">Honey</td><td class="rt">15.16</td></tr>
+<tr><td class="ix">4</td><td class="ix">34</td><td><span class="chip" style="background:#88a5ff"></span></td><td class="nm">blue</td><td class="hx">#88a5ff</td><td class="og">Periwinkle</td><td class="rt">8.82</td></tr>
+<tr><td class="ix">5</td><td class="ix">35</td><td><span class="chip" style="background:#f97cde"></span></td><td class="nm">magenta</td><td class="hx">#f97cde</td><td class="og">Orchid</td><td class="rt">8.91</td></tr>
+<tr><td class="ix">6</td><td class="ix">36</td><td><span class="chip" style="background:#00ccfa"></span></td><td class="nm">cyan</td><td class="hx">#00ccfa</td><td class="og">Sky</td><td class="rt">10.95</td></tr>
+<tr><td class="ix">7</td><td class="ix">37</td><td><span class="chip" style="background:#f2f2eb"></span></td><td class="nm">white</td><td class="hx">#f2f2eb</td><td class="og">Clay</td><td class="rt">18.56</td></tr>
+<tr><td class="ix">8</td><td class="ix">90</td><td><span class="chip" style="background:#abacbb"></span></td><td class="nm">blackBright</td><td class="hx">#abacbb</td><td class="og">Dove</td><td class="rt">9.29</td></tr>
+<tr><td class="ix">9</td><td class="ix">91</td><td><span class="chip" style="background:#ff8042"></span></td><td class="nm">redBright</td><td class="hx">#ff8042</td><td class="og">Coral</td><td class="rt">8.37</td></tr>
+<tr><td class="ix">10</td><td class="ix">92</td><td><span class="chip" style="background:#e5ffd2"></span></td><td class="nm">greenBright</td><td class="hx">#e5ffd2</td><td class="og">Mint</td><td class="rt">19.45</td></tr>
+<tr><td class="ix">11</td><td class="ix">93</td><td><span class="chip" style="background:#f5f0ae"></span></td><td class="nm">yellowBright</td><td class="hx">#f5f0ae</td><td class="og">Butter</td><td class="rt">17.85</td></tr>
+<tr><td class="ix">12</td><td class="ix">94</td><td><span class="chip" style="background:#d3edff"></span></td><td class="nm">blueBright</td><td class="hx">#d3edff</td><td class="og">Ice</td><td class="rt">17.22</td></tr>
+<tr><td class="ix">13</td><td class="ix">95</td><td><span class="chip" style="background:#ffc1ee"></span></td><td class="nm">magentaBright</td><td class="hx">#ffc1ee</td><td class="og drv">derived</td><td class="rt">14.03</td></tr>
+<tr><td class="ix">14</td><td class="ix">96</td><td><span class="chip" style="background:#9ce4fd"></span></td><td class="nm">cyanBright</td><td class="hx">#9ce4fd</td><td class="og drv">derived</td><td class="rt">14.84</td></tr>
+<tr><td class="ix">15</td><td class="ix">97</td><td><span class="chip" style="background:#ffffff"></span></td><td class="nm">whiteBright</td><td class="hx">#ffffff</td><td class="og">White</td><td class="rt">20.87</td></tr></table></div>
+      </div>
+      <div class="spec">
+        <div class="spec-head"><span class="t">Jack &amp; Jill Light</span>
+          <span class="s">ground #f9f9f6 · cursor #c24f01</span></div>
+        <div class="term" style="background:#f9f9f6;color:#010101">
+<div class="ln"><span style="color:#923901">✻</span> <span style="color:#71727b">Welcome back. 6 gates, 78 measured pairs</span></div>
+<div class="ln box" style="border-color:#81828b"><span style="color:#8f8f99">&gt;</span> run the export gate<span class="cur" style="background:#c24f01;color:#f9f9f6">&nbsp;</span></div>
+<div class="ln"><span style="color:#ba41a3">│</span> <span style="color:#010101">Bash</span><span style="color:#71727b">(pnpm check:export)</span></div>
+<div class="ln"><span style="color:#ba41a3">│</span> <span style="color:#71727b">406 grid + 360 iso components compiled</span></div>
+<div class="ln"><span style="color:#981c84">✦</span> <span style="color:#010101">Skill</span> <span style="color:#71727b">artifact-design</span></div>
+<div class="ln"><span style="color:#0056ff">?</span> <span style="color:#0056ff">Allow Write to lib/grid/palette.ts?</span></div>
+<div class="ln"><span style="color:#348300">✔</span> 72 roles set <span style="color:#df2501">✗</span> 0 below floor <span style="color:#8b6f01">⚠</span> translucent ground, ratios unmeasurable</div>
+<div class="ln df" style="background:#c5e7ba"><span style="color:#00632f">+</span> magic: { colors: MAGIC_COLORS, onset: 0.72 }</div>
+<div class="ln df" style="background:#ffcec4"><span style="color:#923901">-</span> magic: { colors: MAGIC_COLORS, onset: 0.64 }</div>
+<div class="ln agents"><span style="color:#df2501">●</span><span style="color:#923901">●</span><span style="color:#8b6f01">●</span><span style="color:#348300">●</span><span style="color:#0056ff">●</span><span style="color:#007d9b">●</span><span style="color:#981c84">●</span><span style="color:#ba41a3">●</span> <span style="color:#71727b">eight agents, eight labels</span></div>
+<div class="ln"><span style="color:#007d9b">⏸ plan mode</span> <span style="color:#981c84">⏵⏵ accept edits</span></div>
+</div>
+        <div class="scroll"><table class="slots"><tr><td class="ix">0</td><td class="ix">30</td><td><span class="chip" style="background:#010101"></span></td><td class="nm">black</td><td class="hx">#010101</td><td class="og">Black</td><td class="rt">19.79</td></tr>
+<tr><td class="ix">1</td><td class="ix">31</td><td><span class="chip" style="background:#df2501"></span></td><td class="nm">red</td><td class="hx">#df2501</td><td class="og drv">derived</td><td class="rt">4.52</td></tr>
+<tr><td class="ix">2</td><td class="ix">32</td><td><span class="chip" style="background:#348300"></span></td><td class="nm">green</td><td class="hx">#348300</td><td class="og drv">derived</td><td class="rt">4.53</td></tr>
+<tr><td class="ix">3</td><td class="ix">33</td><td><span class="chip" style="background:#8b6f01"></span></td><td class="nm">yellow</td><td class="hx">#8b6f01</td><td class="og drv">derived</td><td class="rt">4.55</td></tr>
+<tr><td class="ix">4</td><td class="ix">34</td><td><span class="chip" style="background:#0056ff"></span></td><td class="nm">blue</td><td class="hx">#0056ff</td><td class="og">Cobalt</td><td class="rt">5.27</td></tr>
+<tr><td class="ix">5</td><td class="ix">35</td><td><span class="chip" style="background:#ba41a3"></span></td><td class="nm">magenta</td><td class="hx">#ba41a3</td><td class="og drv">derived</td><td class="rt">4.55</td></tr>
+<tr><td class="ix">6</td><td class="ix">36</td><td><span class="chip" style="background:#007d9b"></span></td><td class="nm">cyan</td><td class="hx">#007d9b</td><td class="og drv">derived</td><td class="rt">4.52</td></tr>
+<tr><td class="ix">7</td><td class="ix">37</td><td><span class="chip" style="background:#f2f2eb"></span></td><td class="nm">white</td><td class="hx">#f2f2eb</td><td class="og">Clay</td><td class="rt">1.07</td></tr>
+<tr><td class="ix">8</td><td class="ix">90</td><td><span class="chip" style="background:#717280"></span></td><td class="nm">blackBright</td><td class="hx">#717280</td><td class="og drv">derived</td><td class="rt">4.50</td></tr>
+<tr><td class="ix">9</td><td class="ix">91</td><td><span class="chip" style="background:#923901"></span></td><td class="nm">redBright</td><td class="hx">#923901</td><td class="og drv">derived</td><td class="rt">7.09</td></tr>
+<tr><td class="ix">10</td><td class="ix">92</td><td><span class="chip" style="background:#00632f"></span></td><td class="nm">greenBright</td><td class="hx">#00632f</td><td class="og drv">derived</td><td class="rt">7.05</td></tr>
+<tr><td class="ix">11</td><td class="ix">93</td><td><span class="chip" style="background:#5d5701"></span></td><td class="nm">yellowBright</td><td class="hx">#5d5701</td><td class="og drv">derived</td><td class="rt">7.04</td></tr>
+<tr><td class="ix">12</td><td class="ix">94</td><td><span class="chip" style="background:#3349bb"></span></td><td class="nm">blueBright</td><td class="hx">#3349bb</td><td class="og drv">derived</td><td class="rt">7.08</td></tr>
+<tr><td class="ix">13</td><td class="ix">95</td><td><span class="chip" style="background:#981c84"></span></td><td class="nm">magentaBright</td><td class="hx">#981c84</td><td class="og drv">derived</td><td class="rt">7.02</td></tr>
+<tr><td class="ix">14</td><td class="ix">96</td><td><span class="chip" style="background:#005d74"></span></td><td class="nm">cyanBright</td><td class="hx">#005d74</td><td class="og drv">derived</td><td class="rt">7.07</td></tr>
+<tr><td class="ix">15</td><td class="ix">97</td><td><span class="chip" style="background:#ffffff"></span></td><td class="nm">whiteBright</td><td class="hx">#ffffff</td><td class="og">White</td><td class="rt">1.05</td></tr></table></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The ink is Clay, not white</h2>
+    <p>Pure white on near-black measures 20.87:1, which is the ceiling and reads like one:
+      clinical, and with nowhere for emphasis to go. Body text takes <strong>Clay #f2f2eb</strong>
+      instead, the brand's own warm off-white, at 18.56:1 — still four times the AA floor — and
+      pure White is kept for <strong>bold</strong>, so the hierarchy climbs rather than starting at
+      the top. Below the body it steps down through Dove and two derived greys.</p>
+    <div class="two">
+      <div><div class="cap">On Black</div><table class="tight">
+        <tr><td class="nm">bold</td><td class="sw"><span class="chip lg" style="background:#ffffff"></span><span class="hx">#ffffff</span></td><td class="rt">20.87</td></tr>
+        <tr><td class="nm">body</td><td class="sw"><span class="chip lg" style="background:#f2f2eb"></span><span class="hx">#f2f2eb</span></td><td class="rt">18.56</td></tr>
+        <tr><td class="nm">inactive</td><td class="sw"><span class="chip lg" style="background:#74747e"></span><span class="hx">#74747e</span></td><td class="rt">4.51</td></tr>
+        <tr><td class="nm">subtle</td><td class="sw"><span class="chip lg" style="background:#595962"></span><span class="hx">#595962</span></td><td class="rt">3.01</td></tr>
+      </table></div>
+      <div><div class="cap">On Paper</div><table class="tight">
+        <tr><td class="nm">body and bold</td><td class="sw"><span class="chip lg" style="background:#010101"></span><span class="hx">#010101</span></td><td class="rt">19.79</td></tr>
+        <tr><td class="nm">inactive</td><td class="sw"><span class="chip lg" style="background:#71727b"></span><span class="hx">#71727b</span></td><td class="rt">4.50</td></tr>
+        <tr><td class="nm">subtle</td><td class="sw"><span class="chip lg" style="background:#8f8f99"></span><span class="hx">#8f8f99</span></td><td class="rt">3.04</td></tr>
+      </table>
+      <p class="tight" style="margin-top:12px">On paper there is nothing brighter than the brand's
+        Black to promote bold to, so weight carries it — which the house rule prefers anyway.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The status line, and the rest of the terminal</h2>
+    <p>Claude Code runs a command and prints its stdout under the prompt, so the strip is a shell
+      script emitting <strong>slot numbers, never hexes</strong> — it follows the ground without
+      being told which one is on. Context is drawn as mass rather than a number alone, and turns
+      Honey under 30% and Flame under 15%.</p>
+    <div class="specimens" style="margin-bottom:22px">
+      <div class="spec"><div class="spec-head"><span class="t">On Black</span></div><div class="term" style="background:#010101;color:#f2f2eb"><div class="ln"><span style="color:#ff8042">✻</span> <span style="color:#f2f2eb">Opus 5</span><span style="color:#abacbb">  </span><span style="color:#abacbb">jj-grid-studio</span><span style="color:#abacbb">  </span><span style="color:#ffd862">main*</span><span style="color:#abacbb">  </span><span style="color:#88a5ff">▓▓▓▓▓░░░ 62%</span><span style="color:#abacbb">  </span><span style="color:#abacbb">$2.14</span><span style="color:#abacbb">  </span><span style="color:#27d271">+128</span> <span style="color:#fa2a00">-31</span><span style="color:#abacbb">  </span><span style="color:#f97cde">☾</span></div></div></div>
+      <div class="spec"><div class="spec-head"><span class="t">On Paper</span></div><div class="term" style="background:#f9f9f6;color:#f2f2eb"><div class="ln"><span style="color:#923901">✻</span> <span style="color:#f2f2eb">Opus 5</span><span style="color:#717280">  </span><span style="color:#717280">jj-grid-studio</span><span style="color:#717280">  </span><span style="color:#8b6f01">main*</span><span style="color:#717280">  </span><span style="color:#0056ff">▓▓▓▓▓░░░ 62%</span><span style="color:#717280">  </span><span style="color:#717280">$2.14</span><span style="color:#717280">  </span><span style="color:#348300">+128</span> <span style="color:#df2501">-31</span><span style="color:#717280">  </span><span style="color:#ba41a3">☾</span></div></div></div>
+    </div>
+    <p>Everything else in the terminal reads the same sixteen slots, so it comes along for free once
+      pointed at them: <code>LS_COLORS</code> (directories Periwinkle, links Sky, executables
+      Emerald, archives Coral, media Orchid, a broken link Flame), <code>fzf</code> by slot number,
+      <code>less</code> so man pages stop being blue on black, and git's own
+      <code>color.*</code>. <code>bat</code> and <code>delta</code> both have an
+      <strong>ansi</strong> mode that draws with the terminal's slots, which is better than a
+      generated theme for each: they inherit the brand exactly and flip ground with it.</p>
+  </section>
+
+  <section>
+    <h2>What each slot is spent on</h2>
+    <p>Every accent role points at a <strong>slot</strong> rather than carrying a colour of its own, because
+      Terminal.app renders its own palette exactly and approximates a 24-bit value into its 256 cube. Only the surfaces (message grounds, selection, the diff beds) are written as <code>rgb()</code>, where a shade of
+      a shade is imperceptible and a slot reference would collide with the dim text living in the same slot.</p>
+    <div class="scroll"><table class="roles">
+      <thead><tr><th></th><th>Dark</th><th>Light</th><th>Points at</th><th>Role key</th></tr></thead>
+      <tbody><tr class="grp"><td colspan="5">Claude, and the spinner it shimmers through</td></tr>
+<tr><td class="nm">claude</td><td class="sw"><span class="chip lg" style="background:#ff8042"></span><span class="hx">#ff8042</span></td><td class="sw"><span class="chip lg" style="background:#923901"></span><span class="hx">#923901</span></td><td class="og">slot redBright</td><td class="nm dim">claude</td></tr>
+<tr><td class="nm">shimmer</td><td class="sw"><span class="chip lg" style="background:#f5f0ae"></span><span class="hx">#f5f0ae</span></td><td class="sw"><span class="chip lg" style="background:#5d5701"></span><span class="hx">#5d5701</span></td><td class="og">slot yellowBright</td><td class="nm dim">claudeShimmer</td></tr>
+<tr class="grp"><td colspan="5">Bash</td></tr>
+<tr><td class="nm">bashBorder</td><td class="sw"><span class="chip lg" style="background:#f97cde"></span><span class="hx">#f97cde</span></td><td class="sw"><span class="chip lg" style="background:#ba41a3"></span><span class="hx">#ba41a3</span></td><td class="og">slot magenta</td><td class="nm dim">bashBorder</td></tr>
+<tr class="grp"><td colspan="5">Skills, auto-accept, ultra effort</td></tr>
+<tr><td class="nm">skill</td><td class="sw"><span class="chip lg" style="background:#ffc1ee"></span><span class="hx">#ffc1ee</span></td><td class="sw"><span class="chip lg" style="background:#981c84"></span><span class="hx">#981c84</span></td><td class="og">slot magentaBright</td><td class="nm dim">skill</td></tr>
+<tr><td class="nm">autoAccept</td><td class="sw"><span class="chip lg" style="background:#ffc1ee"></span><span class="hx">#ffc1ee</span></td><td class="sw"><span class="chip lg" style="background:#981c84"></span><span class="hx">#981c84</span></td><td class="og">slot magentaBright</td><td class="nm dim">autoAccept</td></tr>
+<tr><td class="nm">effortUltra</td><td class="sw"><span class="chip lg" style="background:#ffc1ee"></span><span class="hx">#ffc1ee</span></td><td class="sw"><span class="chip lg" style="background:#981c84"></span><span class="hx">#981c84</span></td><td class="og">slot magentaBright</td><td class="nm dim">effortUltra</td></tr>
+<tr class="grp"><td colspan="5">Permission, suggestions, your own label</td></tr>
+<tr><td class="nm">permission</td><td class="sw"><span class="chip lg" style="background:#88a5ff"></span><span class="hx">#88a5ff</span></td><td class="sw"><span class="chip lg" style="background:#0056ff"></span><span class="hx">#0056ff</span></td><td class="og">slot blue</td><td class="nm dim">permission</td></tr>
+<tr><td class="nm">suggestion</td><td class="sw"><span class="chip lg" style="background:#88a5ff"></span><span class="hx">#88a5ff</span></td><td class="sw"><span class="chip lg" style="background:#0056ff"></span><span class="hx">#0056ff</span></td><td class="og">slot blue</td><td class="nm dim">suggestion</td></tr>
+<tr><td class="nm">briefLabelYou</td><td class="sw"><span class="chip lg" style="background:#88a5ff"></span><span class="hx">#88a5ff</span></td><td class="sw"><span class="chip lg" style="background:#0056ff"></span><span class="hx">#0056ff</span></td><td class="og">slot blue</td><td class="nm dim">briefLabelYou</td></tr>
+<tr class="grp"><td colspan="5">Plan mode, IDE</td></tr>
+<tr><td class="nm">planMode</td><td class="sw"><span class="chip lg" style="background:#00ccfa"></span><span class="hx">#00ccfa</span></td><td class="sw"><span class="chip lg" style="background:#007d9b"></span><span class="hx">#007d9b</span></td><td class="og">slot cyan</td><td class="nm dim">planMode</td></tr>
+<tr><td class="nm">ide</td><td class="sw"><span class="chip lg" style="background:#00ccfa"></span><span class="hx">#00ccfa</span></td><td class="sw"><span class="chip lg" style="background:#007d9b"></span><span class="hx">#007d9b</span></td><td class="og">slot cyan</td><td class="nm dim">ide</td></tr>
+<tr class="grp"><td colspan="5">Verdicts</td></tr>
+<tr><td class="nm">success</td><td class="sw"><span class="chip lg" style="background:#27d271"></span><span class="hx">#27d271</span></td><td class="sw"><span class="chip lg" style="background:#348300"></span><span class="hx">#348300</span></td><td class="og">slot green</td><td class="nm dim">success</td></tr>
+<tr><td class="nm">error</td><td class="sw"><span class="chip lg" style="background:#fa2a00"></span><span class="hx">#fa2a00</span></td><td class="sw"><span class="chip lg" style="background:#df2501"></span><span class="hx">#df2501</span></td><td class="og">slot red</td><td class="nm dim">error</td></tr>
+<tr><td class="nm">warning</td><td class="sw"><span class="chip lg" style="background:#ffd862"></span><span class="hx">#ffd862</span></td><td class="sw"><span class="chip lg" style="background:#8b6f01"></span><span class="hx">#8b6f01</span></td><td class="og">slot yellow</td><td class="nm dim">warning</td></tr>
+<tr class="grp"><td colspan="5">Diffs</td></tr>
+<tr><td class="nm">added ground</td><td class="sw"><span class="chip lg" style="background:#002f13"></span><span class="hx">#002f13</span></td><td class="sw"><span class="chip lg" style="background:#c5e7ba"></span><span class="hx">#c5e7ba</span></td><td class="og">rgb() surface</td><td class="nm dim">diffAdded</td></tr>
+<tr><td class="nm">added word</td><td class="sw"><span class="chip lg" style="background:#e5ffd2"></span><span class="hx">#e5ffd2</span></td><td class="sw"><span class="chip lg" style="background:#00632f"></span><span class="hx">#00632f</span></td><td class="og">slot greenBright</td><td class="nm dim">diffAddedWord</td></tr>
+<tr><td class="nm">removed ground</td><td class="sw"><span class="chip lg" style="background:#42160e"></span><span class="hx">#42160e</span></td><td class="sw"><span class="chip lg" style="background:#ffcec4"></span><span class="hx">#ffcec4</span></td><td class="og">rgb() surface</td><td class="nm dim">diffRemoved</td></tr>
+<tr><td class="nm">removed word</td><td class="sw"><span class="chip lg" style="background:#ff8042"></span><span class="hx">#ff8042</span></td><td class="sw"><span class="chip lg" style="background:#923901"></span><span class="hx">#923901</span></td><td class="og">slot redBright</td><td class="nm dim">diffRemovedWord</td></tr>
+<tr class="grp"><td colspan="5">The dim ladder</td></tr>
+<tr><td class="nm">text</td><td class="sw"><span class="chip lg" style="background:#f2f2eb"></span><span class="hx">#f2f2eb</span></td><td class="sw"><span class="chip lg" style="background:#010101"></span><span class="hx">#010101</span></td><td class="og">slot white</td><td class="nm dim">text</td></tr>
+<tr><td class="nm">inactive</td><td class="sw"><span class="chip lg" style="background:#74747e"></span><span class="hx">#74747e</span></td><td class="sw"><span class="chip lg" style="background:#71727b"></span><span class="hx">#71727b</span></td><td class="og">rgb() surface</td><td class="nm dim">inactive</td></tr>
+<tr><td class="nm">subtle</td><td class="sw"><span class="chip lg" style="background:#595962"></span><span class="hx">#595962</span></td><td class="sw"><span class="chip lg" style="background:#8f8f99"></span><span class="hx">#8f8f99</span></td><td class="og">rgb() surface</td><td class="nm dim">subtle</td></tr>
+<tr><td class="nm">promptBorder</td><td class="sw"><span class="chip lg" style="background:#65666e"></span><span class="hx">#65666e</span></td><td class="sw"><span class="chip lg" style="background:#81828b"></span><span class="hx">#81828b</span></td><td class="og">rgb() surface</td><td class="nm dim">promptBorder</td></tr>
+<tr class="grp"><td colspan="5">Eight parallel agents</td></tr>
+<tr><td class="nm">1</td><td class="sw"><span class="chip lg" style="background:#fa2a00"></span><span class="hx">#fa2a00</span></td><td class="sw"><span class="chip lg" style="background:#df2501"></span><span class="hx">#df2501</span></td><td class="og">slot red</td><td class="nm dim">red_FOR_SUBAGENTS_ONLY</td></tr>
+<tr><td class="nm">2</td><td class="sw"><span class="chip lg" style="background:#ff8042"></span><span class="hx">#ff8042</span></td><td class="sw"><span class="chip lg" style="background:#923901"></span><span class="hx">#923901</span></td><td class="og">slot redBright</td><td class="nm dim">orange_FOR_SUBAGENTS_ONLY</td></tr>
+<tr><td class="nm">3</td><td class="sw"><span class="chip lg" style="background:#ffd862"></span><span class="hx">#ffd862</span></td><td class="sw"><span class="chip lg" style="background:#8b6f01"></span><span class="hx">#8b6f01</span></td><td class="og">slot yellow</td><td class="nm dim">yellow_FOR_SUBAGENTS_ONLY</td></tr>
+<tr><td class="nm">4</td><td class="sw"><span class="chip lg" style="background:#27d271"></span><span class="hx">#27d271</span></td><td class="sw"><span class="chip lg" style="background:#348300"></span><span class="hx">#348300</span></td><td class="og">slot green</td><td class="nm dim">green_FOR_SUBAGENTS_ONLY</td></tr>
+<tr><td class="nm">5</td><td class="sw"><span class="chip lg" style="background:#88a5ff"></span><span class="hx">#88a5ff</span></td><td class="sw"><span class="chip lg" style="background:#0056ff"></span><span class="hx">#0056ff</span></td><td class="og">slot blue</td><td class="nm dim">blue_FOR_SUBAGENTS_ONLY</td></tr>
+<tr><td class="nm">6</td><td class="sw"><span class="chip lg" style="background:#00ccfa"></span><span class="hx">#00ccfa</span></td><td class="sw"><span class="chip lg" style="background:#007d9b"></span><span class="hx">#007d9b</span></td><td class="og">slot cyan</td><td class="nm dim">cyan_FOR_SUBAGENTS_ONLY</td></tr>
+<tr><td class="nm">7</td><td class="sw"><span class="chip lg" style="background:#ffc1ee"></span><span class="hx">#ffc1ee</span></td><td class="sw"><span class="chip lg" style="background:#981c84"></span><span class="hx">#981c84</span></td><td class="og">slot magentaBright</td><td class="nm dim">purple_FOR_SUBAGENTS_ONLY</td></tr>
+<tr><td class="nm">8</td><td class="sw"><span class="chip lg" style="background:#f97cde"></span><span class="hx">#f97cde</span></td><td class="sw"><span class="chip lg" style="background:#ba41a3"></span><span class="hx">#ba41a3</span></td><td class="og">slot magenta</td><td class="nm dim">pink_FOR_SUBAGENTS_ONLY</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>The floors, and what came closest to them</h2>
+    <div class="floors">
+      <div><b>4.5:1</b><span>text roles</span></div>
+      <div><b>3.0:1</b><span>borders, dims, spinners</span></div>
+      <div><b>4.5:1</b><span>the glyph under the cursor</span></div>
+      <div><b>4.5:1</b><span>inverse ink on a chip</span></div>
+    </div>
+    <p>A chip is an accent block with inverse ink on it, so every accent is squeezed from both sides: dark enough
+      to read on the ground, light enough to carry white. On Paper those two demands very nearly meet, and the
+      tightest is 4.77:1, which is exactly the kind of thing that only shows up if you measure it. The block
+      cursor answers to the text floor rather than the UI one, because Terminal draws the character beneath it in
+      the ground colour.</p>
+    <div class="two">
+      <div>
+        <div class="cap">Dark · tightest five of 78</div>
+        <table class="tight"><tr><td class="nm">subtle</td><td class="rt">3.01</td><td class="rt dim">3.0</td><td class="bar"><span style="width:38%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">promptBorder</td><td class="rt">3.66</td><td class="rt dim">3.0</td><td class="bar"><span style="width:46%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">inactive</td><td class="rt">4.51</td><td class="rt dim">4.5</td><td class="bar"><span style="width:56%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">error</td><td class="rt">5.36</td><td class="rt dim">4.5</td><td class="bar"><span style="width:67%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">red_FOR_SUBAGENTS_ONLY</td><td class="rt">5.36</td><td class="rt dim">4.5</td><td class="bar"><span style="width:67%;background:var(--ok)"></span></td></tr></table>
+      </div>
+      <div>
+        <div class="cap">Light · tightest five of 78</div>
+        <table class="tight"><tr><td class="nm">subtle</td><td class="rt">3.04</td><td class="rt dim">3.0</td><td class="bar"><span style="width:38%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">promptBorder</td><td class="rt">3.62</td><td class="rt dim">3.0</td><td class="bar"><span style="width:45%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">promptBorderShimmer</td><td class="rt">4.50</td><td class="rt dim">3.0</td><td class="bar"><span style="width:56%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">planMode</td><td class="rt">4.52</td><td class="rt dim">4.5</td><td class="bar"><span style="width:56%;background:var(--ok)"></span></td></tr>
+<tr><td class="nm">ide</td><td class="rt">4.52</td><td class="rt dim">3.0</td><td class="bar"><span style="width:56%;background:var(--ok)"></span></td></tr></table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Putting it on</h2>
+    <ol>
+      <li>
+        <div>
+          <h3>Install the plugin</h3>
+          <p>The theme travels as a Claude Code plugin, so nobody copies files. It arrives as two
+            pinned entries in <code>/theme</code>, namespaced to the plugin.</p>
+          <pre>/plugin marketplace add jack-and-jill/jj-brand
+/plugin install jj-brand@jack-and-jill</pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Run the terminal kit once</h3>
+          <p>The half Claude Code cannot set: the sixteen slots, the ground, the cursor, the
+            selection, the status line and the shell palette. It backs up everything it touches,
+            keeps a status line you already have, and never overwrites a git colour you set
+            yourself. <code>--all</code> adds the Dock toggle and the flashing cursor.</p>
+          <pre>~/.claude/plugins/cache/jack-and-jill/jj-brand/1.0.0/install.sh --all</pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Pick it, and reload the shell</h3>
+          <pre>/theme        # Jack &amp; Jill
+exec zsh      # for LS_COLORS, bat, fzf, less</pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Not on Apple Terminal?</h3>
+          <p>The same palette is generated for Ghostty, iTerm2, Kitty, Alacritty, WezTerm and VS
+            Code's integrated terminal. One include line each; the kit prints the right one for
+            the terminal you are in.</p>
+          <pre>kit/dist/{ghostty,iterm2,kitty,alacritty,wezterm,vscode}/</pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Flipping ground</h3>
+          <p>The Dock icon, or <code>/jj-brand:ground</code> from inside Claude Code, or
+            <code>jj-ground.sh</code> from any shell. All three do the same thing: every open
+            window at once, then Claude Code's theme file, in that order — so a terminal that
+            refuses to change leaves the theme alone rather than letting the two disagree.</p>
+        </div>
+      </li>
+    </ol>
+
+    <h2 style="margin-top:44px">The cursor changes colour on every blink</h2>
+    <p>Terminal has no dynamic-colour escape code (no OSC 12), but <code>cursor color</code> is a settable
+      per-tab property in its scripting dictionary, so it can be driven from outside. A background agent walks
+      the magic six at the blink cycle, one change per cycle, so every flash differs from the one before it.
+      These are the <strong>real hexes at full saturation</strong>, on both grounds.</p>
+    <p>Two honest limits. Terminal's blink <em>phase</em> is not observable from outside, so the switch drifts
+      within the cycle and sometimes lands mid-flash rather than in the dark half. And the true colours were
+      lit for a dark ground: on Paper they measure between 1.31 and 2.36:1, so the cursor is faint there and a
+      glyph beneath a block cursor is hard to read. A re-lit set that clears 4.5:1 on Paper ships alongside,
+      unused unless the agent is started with <code>lit</code>.</p>
+    <div class="scroll"><table class="roles">
+      <thead><tr><th></th><th>Cursor</th><th>On Black</th><th>On Paper</th></tr></thead>
+      <tbody><tr><td class="nm">Coral</td><td class="sw"><span class="chip lg" style="background:#ff8042"></span><span class="hx">#ff8042</span></td><td class="rt">8.37</td><td class="rt">2.36</td></tr>
+<tr><td class="nm">Honey</td><td class="sw"><span class="chip lg" style="background:#ffd862"></span><span class="hx">#ffd862</span></td><td class="rt">15.16</td><td class="rt">1.31</td></tr>
+<tr><td class="nm">Emerald</td><td class="sw"><span class="chip lg" style="background:#27d271"></span><span class="hx">#27d271</span></td><td class="rt">10.48</td><td class="rt">1.89</td></tr>
+<tr><td class="nm">Sky</td><td class="sw"><span class="chip lg" style="background:#00ccfa"></span><span class="hx">#00ccfa</span></td><td class="rt">10.95</td><td class="rt">1.81</td></tr>
+<tr><td class="nm">Periwinkle</td><td class="sw"><span class="chip lg" style="background:#88a5ff"></span><span class="hx">#88a5ff</span></td><td class="rt">8.82</td><td class="rt">2.24</td></tr>
+<tr><td class="nm">Orchid</td><td class="sw"><span class="chip lg" style="background:#f97cde"></span><span class="hx">#f97cde</span></td><td class="rt">8.91</td><td class="rt">2.22</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <footer>
+    <span>Regenerate: <code>npx tsx ~/.claude/themes/terminal-app/gen.ts</code>. It reads the swatches out of
+      <code>lib/brand.ts</code>, re-measures every pair, and refuses to write a palette that misses a floor.</span>
+    <span>A Claude Code plugin can carry themes too (<code>themesPath</code>), which is the route if the team
+      should all have this.</span>
+  </footer>
+</div>
+
+</body>
+</html>
