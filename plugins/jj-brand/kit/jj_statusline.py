@@ -53,6 +53,22 @@ def git(cwd, *args, timeout=0.4):
         return None
 
 
+def _clock(v):
+    """A reset time as HH:MM local, from an ISO string or an epoch, or nothing."""
+    import datetime as dt
+    if v in (None, ""):
+        return None
+    try:
+        if isinstance(v, (int, float)):
+            n = float(v)
+            if n > 1e11: n /= 1000        # milliseconds
+            return dt.datetime.fromtimestamp(n).strftime("%H:%M")
+        s = str(v).replace("Z", "+00:00")
+        return dt.datetime.fromisoformat(s).astimezone().strftime("%H:%M")
+    except Exception:
+        return None
+
+
 def _active():
     try:
         return (HOME / ".claude/themes/jack-and-jill.json").read_text()
@@ -72,7 +88,8 @@ def audit():
         la, lb = lum(a), lum(b)
         hi, lo = max(la, lb), min(la, lb)
         return (hi + 0.05) / (lo + 0.05)
-    fields = [("mark", "redBright"), ("model", None), ("project", "blackBright"),
+    fields = [("mark", "redBright"), ("project", "blackBright"),
+              ("limit ok", "blackBright"), ("limit warm", "yellow"), ("limit hot", "red"),
               ("branch clean", "green"), ("branch dirty", "yellow"),
               ("context", "blue"), ("context low", "red"), ("spend", "blackBright"),
               ("added", "green"), ("removed", "red"), ("ground", "magenta")]
@@ -82,7 +99,7 @@ def audit():
         ground, slots = t["ground"], t["slots"]
         print(f"{t['name']}  ground {ground}")
         for name, slot in fields:
-            s = ("black" if light else "white") if slot is None else slot
+            s = slot
             r = cr(slots[s], ground)
             flag = "" if r >= 4.5 else "   BELOW 4.5"
             if r < 4.5: bad += 1
@@ -104,11 +121,14 @@ def main():
         except Exception:
             pass
 
-    # Which ground is on decides the primary ink. Hardcoding `white` put the
-    # model name at 1.07:1 on Paper: Clay on Paper is invisible. Every slot this
-    # strip uses is now chosen by ground, and --audit measures all of them.
+    # THE PRIMARY INK IS NOT COLOURED AT ALL, and that is the fix rather than a
+    # shortcut. Choosing it from the theme file was wrong twice over: the file
+    # says which ground CLAUDE CODE is themed for, which is not necessarily the
+    # ground of the window you are looking at (another terminal, or the second
+    # between a flip landing on Terminal and the commit), and either way a wrong
+    # guess writes black on black. Emitting no SGR hands the decision to the
+    # thing that actually owns the ground, exactly as `ansi:` does in the theme.
     light = "light-ansi" in _active()
-    INK = "black" if light else "white"
 
     parts = []
 
@@ -116,7 +136,7 @@ def main():
     model = dig(d, "display_name", "displayName") or dig(d, "model") or ""
     if isinstance(model, dict):
         model = model.get("display_name") or model.get("id") or ""
-    parts.append(c("redBright", "✻") + " " + c(INK, str(model) or "Claude"))
+    parts.append(c("redBright", "✻") + " " + (str(model) or "Claude"))
 
     # Where you are. The project's own name, not the whole path.
     cwd = dig(d, "current_dir", "cwd", "project_dir") or os.getcwd()
@@ -160,7 +180,30 @@ def main():
     if add or rem:
         parts.append(c("green", f"+{add or 0}") + " " + c("red", f"-{rem or 0}"))
 
-    # Which ground is on, so the strip says what the last flip did.
+    # The rate-limit windows. Shown as bare percentages rather than a second
+    # bar: one bar on a line reads as "the" measure, two read as a dashboard.
+    # A reset time appears only once the window is nearly spent, because until
+    # then it is a number nobody acts on.
+    for key, label in (("five_hour", "5h"), ("seven_day", "wk")):
+        win = dig(d, key)
+        if not isinstance(win, dict):
+            continue
+        u = win.get("utilization", win.get("utilisation"))
+        if u is None:
+            continue
+        try: u = float(u)
+        except Exception: continue
+        if u <= 1: u *= 100          # some payloads report a fraction
+        slot = "red" if u >= 80 else ("yellow" if u >= 50 else "blackBright")
+        seg = f"{label} {u:.0f}%"
+        if u >= 80:
+            when = win.get("resets_at")
+            t = _clock(when)
+            if t: seg += f" til {t}"
+        parts.append(c(slot, seg))
+
+    # Which ground Claude Code is themed for. Deliberately NOT a claim about the
+    # window: see the note on the primary ink.
     parts.append(c("magenta", "☀" if light else "☾"))
 
     sys.stdout.write(c("blackBright", "  ").join(parts))
