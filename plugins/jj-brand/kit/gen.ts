@@ -12,6 +12,10 @@
  * ground in the first place. On Paper it fires for nearly all of them, which
  * is the whole reason this file measures rather than assumes.
  * ========================================================================= */
+/* REGENERATING THIS NEEDS THE STUDIO REPO. The import below and the REPO const
+ * point at a checkout of jj-grid-studio, because `lib/brand.ts` is the single
+ * source of truth for the swatches and a vendored copy would drift. Change both
+ * paths if your checkout lives elsewhere. */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
