@@ -1,0 +1,32 @@
+# Jack & Jill Light
+[colors.primary]
+background = "#f9f9f6"
+foreground = "#010101"
+
+[colors.cursor]
+cursor = "#ff8042"
+text = "#f9f9f6"
+
+[colors.selection]
+background = "#b3c5e6"
+text = "#010101"
+
+[colors.normal]
+black = "#010101"
+red = "#df2501"
+green = "#348300"
+yellow = "#8b6f01"
+blue = "#0056ff"
+magenta = "#ba41a3"
+cyan = "#007d9b"
+white = "#f2f2eb"
+
+[colors.bright]
+black = "#717280"
+red = "#923901"
+green = "#00632f"
+yellow = "#5d5701"
+blue = "#3349bb"
+magenta = "#981c84"
+cyan = "#005d74"
+white = "#ffffff"

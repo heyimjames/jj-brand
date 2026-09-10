@@ -1,0 +1,23 @@
+# Jack & Jill Light
+background = #f9f9f6
+foreground = #010101
+bold-is-bright = false
+cursor-color = #ff8042
+selection-background = #b3c5e6
+selection-foreground = #010101
+palette = 0=#010101
+palette = 1=#df2501
+palette = 2=#348300
+palette = 3=#8b6f01
+palette = 4=#0056ff
+palette = 5=#ba41a3
+palette = 6=#007d9b
+palette = 7=#f2f2eb
+palette = 8=#717280
+palette = 9=#923901
+palette = 10=#00632f
+palette = 11=#5d5701
+palette = 12=#3349bb
+palette = 13=#981c84
+palette = 14=#005d74
+palette = 15=#ffffff

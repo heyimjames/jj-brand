@@ -1,0 +1,23 @@
+# Jack & Jill Dark
+background = #010101
+foreground = #f2f2eb
+bold-is-bright = false
+cursor-color = #ff8042
+selection-background = #252e49
+selection-foreground = #f2f2eb
+palette = 0=#010101
+palette = 1=#fa2a00
+palette = 2=#27d271
+palette = 3=#ffd862
+palette = 4=#88a5ff
+palette = 5=#f97cde
+palette = 6=#00ccfa
+palette = 7=#f2f2eb
+palette = 8=#abacbb
+palette = 9=#ff8042
+palette = 10=#e5ffd2
+palette = 11=#f5f0ae
+palette = 12=#d3edff
+palette = 13=#ffc1ee
+palette = 14=#9ce4fd
+palette = 15=#ffffff

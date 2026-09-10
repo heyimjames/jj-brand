@@ -1,0 +1,1370 @@
+{
+ "jack-and-jill-dark": {
+  "name": "Jack & Jill Dark",
+  "base": "dark-ansi",
+  "ground": "#010101",
+  "slots": {
+   "black": "#010101",
+   "red": "#fa2a00",
+   "green": "#27d271",
+   "yellow": "#ffd862",
+   "blue": "#88a5ff",
+   "magenta": "#f97cde",
+   "cyan": "#00ccfa",
+   "white": "#f2f2eb",
+   "blackBright": "#abacbb",
+   "redBright": "#ff8042",
+   "greenBright": "#e5ffd2",
+   "yellowBright": "#f5f0ae",
+   "blueBright": "#d3edff",
+   "magentaBright": "#ffc1ee",
+   "cyanBright": "#9ce4fd",
+   "whiteBright": "#ffffff"
+  },
+  "theme": {
+   "claude": "ansi:redBright",
+   "claudeShimmer": "ansi:yellowBright",
+   "briefLabelClaude": "ansi:redBright",
+   "clawd_body": "ansi:redBright",
+   "clawd_background": "ansi:black",
+   "bashBorder": "ansi:magenta",
+   "skill": "ansi:magentaBright",
+   "autoAccept": "ansi:magentaBright",
+   "autoAcceptShimmer": "ansi:magentaBright",
+   "merged": "ansi:magentaBright",
+   "effortUltra": "ansi:magentaBright",
+   "permission": "ansi:blue",
+   "permissionShimmer": "ansi:blueBright",
+   "suggestion": "ansi:blue",
+   "remember": "ansi:blue",
+   "briefLabelYou": "ansi:blue",
+   "claudeBlue_FOR_SYSTEM_SPINNER": "ansi:blue",
+   "claudeBlueShimmer_FOR_SYSTEM_SPINNER": "ansi:blueBright",
+   "professionalBlue": "ansi:blue",
+   "rate_limit_fill": "ansi:blue",
+   "rate_limit_empty": "rgb(24,24,24)",
+   "planMode": "ansi:cyan",
+   "ide": "ansi:cyan",
+   "background": "ansi:cyan",
+   "success": "ansi:green",
+   "error": "ansi:red",
+   "warning": "ansi:yellow",
+   "warningShimmer": "ansi:yellowBright",
+   "chromeYellow": "ansi:yellow",
+   "fastMode": "ansi:redBright",
+   "fastModeShimmer": "ansi:yellowBright",
+   "text": "ansi:white",
+   "inverseText": "ansi:black",
+   "inactive": "rgb(116,116,126)",
+   "inactiveShimmer": "ansi:whiteBright",
+   "subtle": "rgb(89,89,98)",
+   "promptBorder": "rgb(101,102,110)",
+   "promptBorderShimmer": "ansi:blackBright",
+   "diffAdded": "rgb(0,47,19)",
+   "diffRemoved": "rgb(66,22,14)",
+   "diffAddedDimmed": "rgb(2,22,8)",
+   "diffRemovedDimmed": "rgb(32,9,6)",
+   "diffAddedWord": "ansi:greenBright",
+   "diffRemovedWord": "ansi:redBright",
+   "red_FOR_SUBAGENTS_ONLY": "ansi:red",
+   "orange_FOR_SUBAGENTS_ONLY": "ansi:redBright",
+   "yellow_FOR_SUBAGENTS_ONLY": "ansi:yellow",
+   "green_FOR_SUBAGENTS_ONLY": "ansi:green",
+   "blue_FOR_SUBAGENTS_ONLY": "ansi:blue",
+   "cyan_FOR_SUBAGENTS_ONLY": "ansi:cyan",
+   "purple_FOR_SUBAGENTS_ONLY": "ansi:magentaBright",
+   "pink_FOR_SUBAGENTS_ONLY": "ansi:magenta",
+   "rainbow_red": "ansi:red",
+   "rainbow_orange": "ansi:redBright",
+   "rainbow_yellow": "ansi:yellow",
+   "rainbow_green": "ansi:green",
+   "rainbow_blue": "ansi:cyan",
+   "rainbow_indigo": "ansi:blue",
+   "rainbow_violet": "ansi:magenta",
+   "rainbow_red_shimmer": "ansi:redBright",
+   "rainbow_orange_shimmer": "ansi:yellow",
+   "rainbow_yellow_shimmer": "ansi:yellowBright",
+   "rainbow_green_shimmer": "ansi:greenBright",
+   "rainbow_blue_shimmer": "ansi:cyanBright",
+   "rainbow_indigo_shimmer": "ansi:blueBright",
+   "rainbow_violet_shimmer": "ansi:magentaBright",
+   "userMessageBackground": "rgb(9,9,9)",
+   "userMessageBackgroundHover": "rgb(18,18,18)",
+   "composerSidebarBackground": "rgb(5,5,5)",
+   "bashMessageBackgroundColor": "rgb(18,4,15)",
+   "memoryBackgroundColor": "rgb(0,12,17)",
+   "selectionBg": "rgb(37,46,73)"
+  },
+  "audit": [
+   {
+    "what": "claude",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "claudeShimmer",
+    "fg": "#f5f0ae",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 17.849373923400996
+   },
+   {
+    "what": "briefLabelClaude",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "clawd_body",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "bashBorder",
+    "fg": "#f97cde",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.911694561782166
+   },
+   {
+    "what": "skill",
+    "fg": "#ffc1ee",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "autoAccept",
+    "fg": "#ffc1ee",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "autoAcceptShimmer",
+    "fg": "#ffc1ee",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "merged",
+    "fg": "#ffc1ee",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "effortUltra",
+    "fg": "#ffc1ee",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "permission",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "permissionShimmer",
+    "fg": "#d3edff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 17.22289918109801
+   },
+   {
+    "what": "suggestion",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "remember",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "briefLabelYou",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "claudeBlue_FOR_SYSTEM_SPINNER",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "claudeBlueShimmer_FOR_SYSTEM_SPINNER",
+    "fg": "#d3edff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 17.22289918109801
+   },
+   {
+    "what": "professionalBlue",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "rate_limit_fill",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "planMode",
+    "fg": "#00ccfa",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 10.951092734195242
+   },
+   {
+    "what": "ide",
+    "fg": "#00ccfa",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 10.951092734195242
+   },
+   {
+    "what": "background",
+    "fg": "#00ccfa",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 10.951092734195242
+   },
+   {
+    "what": "success",
+    "fg": "#27d271",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 10.479737567241138
+   },
+   {
+    "what": "error",
+    "fg": "#fa2a00",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 5.363425560192178
+   },
+   {
+    "what": "warning",
+    "fg": "#ffd862",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 15.158693645041861
+   },
+   {
+    "what": "warningShimmer",
+    "fg": "#f5f0ae",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 17.849373923400996
+   },
+   {
+    "what": "chromeYellow",
+    "fg": "#ffd862",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 15.158693645041861
+   },
+   {
+    "what": "fastMode",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "fastModeShimmer",
+    "fg": "#f5f0ae",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 17.849373923400996
+   },
+   {
+    "what": "text",
+    "fg": "#f2f2eb",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 18.563244167340496
+   },
+   {
+    "what": "inactive",
+    "fg": "#74747e",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 4.51462266672494
+   },
+   {
+    "what": "inactiveShimmer",
+    "fg": "#ffffff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 20.87328787787365
+   },
+   {
+    "what": "subtle",
+    "fg": "#595962",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 3.011805901248181
+   },
+   {
+    "what": "promptBorder",
+    "fg": "#65666e",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 3.656847545889309
+   },
+   {
+    "what": "promptBorderShimmer",
+    "fg": "#abacbb",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 9.293748102598947
+   },
+   {
+    "what": "diffAddedWord",
+    "fg": "#e5ffd2",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 19.448170460029367
+   },
+   {
+    "what": "diffRemovedWord",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "red_FOR_SUBAGENTS_ONLY",
+    "fg": "#fa2a00",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 5.363425560192178
+   },
+   {
+    "what": "orange_FOR_SUBAGENTS_ONLY",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "yellow_FOR_SUBAGENTS_ONLY",
+    "fg": "#ffd862",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 15.158693645041861
+   },
+   {
+    "what": "green_FOR_SUBAGENTS_ONLY",
+    "fg": "#27d271",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 10.479737567241138
+   },
+   {
+    "what": "blue_FOR_SUBAGENTS_ONLY",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "cyan_FOR_SUBAGENTS_ONLY",
+    "fg": "#00ccfa",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 10.951092734195242
+   },
+   {
+    "what": "purple_FOR_SUBAGENTS_ONLY",
+    "fg": "#ffc1ee",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "pink_FOR_SUBAGENTS_ONLY",
+    "fg": "#f97cde",
+    "bg": "#010101",
+    "floor": 4.5,
+    "ratio": 8.911694561782166
+   },
+   {
+    "what": "rainbow_red",
+    "fg": "#fa2a00",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 5.363425560192178
+   },
+   {
+    "what": "rainbow_orange",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "rainbow_yellow",
+    "fg": "#ffd862",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 15.158693645041861
+   },
+   {
+    "what": "rainbow_green",
+    "fg": "#27d271",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 10.479737567241138
+   },
+   {
+    "what": "rainbow_blue",
+    "fg": "#00ccfa",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 10.951092734195242
+   },
+   {
+    "what": "rainbow_indigo",
+    "fg": "#88a5ff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "rainbow_violet",
+    "fg": "#f97cde",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.911694561782166
+   },
+   {
+    "what": "rainbow_red_shimmer",
+    "fg": "#ff8042",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "rainbow_orange_shimmer",
+    "fg": "#ffd862",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 15.158693645041861
+   },
+   {
+    "what": "rainbow_yellow_shimmer",
+    "fg": "#f5f0ae",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 17.849373923400996
+   },
+   {
+    "what": "rainbow_green_shimmer",
+    "fg": "#e5ffd2",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 19.448170460029367
+   },
+   {
+    "what": "rainbow_blue_shimmer",
+    "fg": "#9ce4fd",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 14.839232587925546
+   },
+   {
+    "what": "rainbow_indigo_shimmer",
+    "fg": "#d3edff",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 17.22289918109801
+   },
+   {
+    "what": "rainbow_violet_shimmer",
+    "fg": "#ffc1ee",
+    "bg": "#010101",
+    "floor": 3,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "text on userMessageBackground",
+    "fg": "#ffffff",
+    "bg": "#090909",
+    "floor": 4.5,
+    "ratio": 19.912104990502506
+   },
+   {
+    "what": "text on userMessageBackgroundHover",
+    "fg": "#ffffff",
+    "bg": "#121212",
+    "floor": 4.5,
+    "ratio": 18.733663902900595
+   },
+   {
+    "what": "text on composerSidebarBackground",
+    "fg": "#ffffff",
+    "bg": "#050505",
+    "floor": 4.5,
+    "ratio": 20.381370411830552
+   },
+   {
+    "what": "text on bashMessageBackgroundColor",
+    "fg": "#ffffff",
+    "bg": "#12040f",
+    "floor": 4.5,
+    "ratio": 20.000301743027798
+   },
+   {
+    "what": "text on memoryBackgroundColor",
+    "fg": "#ffffff",
+    "bg": "#000c11",
+    "floor": 4.5,
+    "ratio": 19.798564758562286
+   },
+   {
+    "what": "text on selectionBg",
+    "fg": "#ffffff",
+    "bg": "#252e49",
+    "floor": 4.5,
+    "ratio": 13.412798198068085
+   },
+   {
+    "what": "text on diffAdded",
+    "fg": "#ffffff",
+    "bg": "#002f13",
+    "floor": 4.5,
+    "ratio": 14.830408681680623
+   },
+   {
+    "what": "text on diffRemoved",
+    "fg": "#ffffff",
+    "bg": "#42160e",
+    "floor": 4.5,
+    "ratio": 15.523873856551308
+   },
+   {
+    "what": "text on diffAddedDimmed",
+    "fg": "#ffffff",
+    "bg": "#021608",
+    "floor": 4.5,
+    "ratio": 18.73575932330073
+   },
+   {
+    "what": "text on diffRemovedDimmed",
+    "fg": "#ffffff",
+    "bg": "#200906",
+    "floor": 4.5,
+    "ratio": 19.036916406703927
+   },
+   {
+    "what": "text on rate_limit_empty",
+    "fg": "#ffffff",
+    "bg": "#181818",
+    "floor": 4.5,
+    "ratio": 17.756264715186326
+   },
+   {
+    "what": "inverseText on claude",
+    "fg": "#010101",
+    "bg": "#ff8042",
+    "floor": 4.5,
+    "ratio": 8.367542613428693
+   },
+   {
+    "what": "inverseText on permission",
+    "fg": "#010101",
+    "bg": "#88a5ff",
+    "floor": 4.5,
+    "ratio": 8.819363154521369
+   },
+   {
+    "what": "inverseText on autoAccept",
+    "fg": "#010101",
+    "bg": "#ffc1ee",
+    "floor": 4.5,
+    "ratio": 14.029428804975907
+   },
+   {
+    "what": "inverseText on error",
+    "fg": "#010101",
+    "bg": "#fa2a00",
+    "floor": 4.5,
+    "ratio": 5.363425560192178
+   },
+   {
+    "what": "inverseText on success",
+    "fg": "#010101",
+    "bg": "#27d271",
+    "floor": 4.5,
+    "ratio": 10.479737567241138
+   },
+   {
+    "what": "inverseText on warning",
+    "fg": "#010101",
+    "bg": "#ffd862",
+    "floor": 4.5,
+    "ratio": 15.158693645041861
+   },
+   {
+    "what": "addedWord on diffAdded",
+    "fg": "#e5ffd2",
+    "bg": "#002f13",
+    "floor": 3,
+    "ratio": 13.817867013608486
+   },
+   {
+    "what": "removedWord on diffRemoved",
+    "fg": "#ff8042",
+    "bg": "#42160e",
+    "floor": 3,
+    "ratio": 6.22310566405206
+   }
+  ],
+  "brand": {
+   "Black": "#010101",
+   "White": "#ffffff",
+   "Paper": "#f9f9f6",
+   "Clay": "#f2f2eb",
+   "Ice": "#d3edff",
+   "Mint": "#e5ffd2",
+   "Butter": "#f5f0ae",
+   "Cobalt": "#0056ff",
+   "Leaf": "#388b00",
+   "Flame": "#fa2a00",
+   "Dove": "#abacbb",
+   "Sage": "#8ca372",
+   "Khaki": "#afa477",
+   "Coral": "#ff8042",
+   "Honey": "#ffd862",
+   "Emerald": "#27d271",
+   "Sky": "#00ccfa",
+   "Periwinkle": "#88a5ff",
+   "Orchid": "#f97cde"
+  },
+  "slotBrand": {
+   "black": "Black",
+   "red": "Flame",
+   "green": "Emerald",
+   "yellow": "Honey",
+   "blue": "Periwinkle",
+   "magenta": "Orchid",
+   "cyan": "Sky",
+   "white": "Clay",
+   "blackBright": "Dove",
+   "redBright": "Coral",
+   "greenBright": "Mint",
+   "yellowBright": "Butter",
+   "blueBright": "Ice",
+   "magentaBright": null,
+   "cyanBright": null,
+   "whiteBright": "White"
+  }
+ },
+ "jack-and-jill-light": {
+  "name": "Jack & Jill Light",
+  "base": "light-ansi",
+  "ground": "#f9f9f6",
+  "slots": {
+   "black": "#010101",
+   "red": "#df2501",
+   "green": "#348300",
+   "yellow": "#8b6f01",
+   "blue": "#0056ff",
+   "magenta": "#ba41a3",
+   "cyan": "#007d9b",
+   "white": "#f2f2eb",
+   "blackBright": "#717280",
+   "redBright": "#923901",
+   "greenBright": "#00632f",
+   "yellowBright": "#5d5701",
+   "blueBright": "#3349bb",
+   "magentaBright": "#981c84",
+   "cyanBright": "#005d74",
+   "whiteBright": "#ffffff"
+  },
+  "theme": {
+   "claude": "ansi:redBright",
+   "claudeShimmer": "ansi:yellowBright",
+   "briefLabelClaude": "ansi:redBright",
+   "clawd_body": "ansi:redBright",
+   "clawd_background": "ansi:black",
+   "bashBorder": "ansi:magenta",
+   "skill": "ansi:magentaBright",
+   "autoAccept": "ansi:magentaBright",
+   "autoAcceptShimmer": "ansi:magentaBright",
+   "merged": "ansi:magentaBright",
+   "effortUltra": "ansi:magentaBright",
+   "permission": "ansi:blue",
+   "permissionShimmer": "ansi:blueBright",
+   "suggestion": "ansi:blue",
+   "remember": "ansi:blue",
+   "briefLabelYou": "ansi:blue",
+   "claudeBlue_FOR_SYSTEM_SPINNER": "ansi:blue",
+   "claudeBlueShimmer_FOR_SYSTEM_SPINNER": "ansi:blueBright",
+   "professionalBlue": "ansi:blue",
+   "rate_limit_fill": "ansi:blue",
+   "rate_limit_empty": "rgb(203,203,200)",
+   "planMode": "ansi:cyan",
+   "ide": "ansi:cyan",
+   "background": "ansi:cyan",
+   "success": "ansi:green",
+   "error": "ansi:red",
+   "warning": "ansi:yellow",
+   "warningShimmer": "ansi:yellowBright",
+   "chromeYellow": "ansi:yellow",
+   "fastMode": "ansi:redBright",
+   "fastModeShimmer": "ansi:yellowBright",
+   "text": "ansi:black",
+   "inverseText": "ansi:whiteBright",
+   "inactive": "rgb(113,114,123)",
+   "inactiveShimmer": "ansi:black",
+   "subtle": "rgb(143,143,153)",
+   "promptBorder": "rgb(129,130,139)",
+   "promptBorderShimmer": "ansi:blackBright",
+   "diffAdded": "rgb(197,231,186)",
+   "diffRemoved": "rgb(255,206,196)",
+   "diffAddedDimmed": "rgb(220,239,213)",
+   "diffRemovedDimmed": "rgb(254,225,218)",
+   "diffAddedWord": "ansi:greenBright",
+   "diffRemovedWord": "ansi:redBright",
+   "red_FOR_SUBAGENTS_ONLY": "ansi:red",
+   "orange_FOR_SUBAGENTS_ONLY": "ansi:redBright",
+   "yellow_FOR_SUBAGENTS_ONLY": "ansi:yellow",
+   "green_FOR_SUBAGENTS_ONLY": "ansi:green",
+   "blue_FOR_SUBAGENTS_ONLY": "ansi:blue",
+   "cyan_FOR_SUBAGENTS_ONLY": "ansi:cyan",
+   "purple_FOR_SUBAGENTS_ONLY": "ansi:magentaBright",
+   "pink_FOR_SUBAGENTS_ONLY": "ansi:magenta",
+   "rainbow_red": "ansi:red",
+   "rainbow_orange": "ansi:redBright",
+   "rainbow_yellow": "ansi:yellow",
+   "rainbow_green": "ansi:green",
+   "rainbow_blue": "ansi:cyan",
+   "rainbow_indigo": "ansi:blue",
+   "rainbow_violet": "ansi:magenta",
+   "rainbow_red_shimmer": "ansi:redBright",
+   "rainbow_orange_shimmer": "ansi:yellow",
+   "rainbow_yellow_shimmer": "ansi:yellowBright",
+   "rainbow_green_shimmer": "ansi:greenBright",
+   "rainbow_blue_shimmer": "ansi:cyanBright",
+   "rainbow_indigo_shimmer": "ansi:blueBright",
+   "rainbow_violet_shimmer": "ansi:magentaBright",
+   "userMessageBackground": "rgb(224,224,221)",
+   "userMessageBackgroundHover": "rgb(211,211,208)",
+   "composerSidebarBackground": "rgb(232,232,229)",
+   "bashMessageBackgroundColor": "rgb(240,216,233)",
+   "memoryBackgroundColor": "rgb(200,230,241)",
+   "selectionBg": "rgb(179,197,230)"
+  },
+  "audit": [
+   {
+    "what": "claude",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "claudeShimmer",
+    "fg": "#5d5701",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.037096640341563
+   },
+   {
+    "what": "briefLabelClaude",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "clawd_body",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "bashBorder",
+    "fg": "#ba41a3",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.552906017414033
+   },
+   {
+    "what": "skill",
+    "fg": "#981c84",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.024129852714573
+   },
+   {
+    "what": "autoAccept",
+    "fg": "#981c84",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.024129852714573
+   },
+   {
+    "what": "autoAcceptShimmer",
+    "fg": "#981c84",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.024129852714573
+   },
+   {
+    "what": "merged",
+    "fg": "#981c84",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.024129852714573
+   },
+   {
+    "what": "effortUltra",
+    "fg": "#981c84",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.024129852714573
+   },
+   {
+    "what": "permission",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "permissionShimmer",
+    "fg": "#3349bb",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.081645228786057
+   },
+   {
+    "what": "suggestion",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "remember",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "briefLabelYou",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "claudeBlue_FOR_SYSTEM_SPINNER",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "claudeBlueShimmer_FOR_SYSTEM_SPINNER",
+    "fg": "#3349bb",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.081645228786057
+   },
+   {
+    "what": "professionalBlue",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "rate_limit_fill",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "planMode",
+    "fg": "#007d9b",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.5178303673973135
+   },
+   {
+    "what": "ide",
+    "fg": "#007d9b",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.5178303673973135
+   },
+   {
+    "what": "background",
+    "fg": "#007d9b",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.5178303673973135
+   },
+   {
+    "what": "success",
+    "fg": "#348300",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.53246124635124
+   },
+   {
+    "what": "error",
+    "fg": "#df2501",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.522034868932181
+   },
+   {
+    "what": "warning",
+    "fg": "#8b6f01",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.553739668807912
+   },
+   {
+    "what": "warningShimmer",
+    "fg": "#5d5701",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.037096640341563
+   },
+   {
+    "what": "chromeYellow",
+    "fg": "#8b6f01",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.553739668807912
+   },
+   {
+    "what": "fastMode",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "fastModeShimmer",
+    "fg": "#5d5701",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.037096640341563
+   },
+   {
+    "what": "text",
+    "fg": "#010101",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 19.788855265155327
+   },
+   {
+    "what": "inactive",
+    "fg": "#71727b",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.529834657358995
+   },
+   {
+    "what": "inactiveShimmer",
+    "fg": "#010101",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 19.788855265155327
+   },
+   {
+    "what": "subtle",
+    "fg": "#8f8f99",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 3.0363438930915767
+   },
+   {
+    "what": "promptBorder",
+    "fg": "#81828b",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 3.620279945174985
+   },
+   {
+    "what": "promptBorderShimmer",
+    "fg": "#717280",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.503510385023828
+   },
+   {
+    "what": "diffAddedWord",
+    "fg": "#00632f",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.045474591405245
+   },
+   {
+    "what": "diffRemovedWord",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "red_FOR_SUBAGENTS_ONLY",
+    "fg": "#df2501",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.522034868932181
+   },
+   {
+    "what": "orange_FOR_SUBAGENTS_ONLY",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "yellow_FOR_SUBAGENTS_ONLY",
+    "fg": "#8b6f01",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.553739668807912
+   },
+   {
+    "what": "green_FOR_SUBAGENTS_ONLY",
+    "fg": "#348300",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.53246124635124
+   },
+   {
+    "what": "blue_FOR_SUBAGENTS_ONLY",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "cyan_FOR_SUBAGENTS_ONLY",
+    "fg": "#007d9b",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.5178303673973135
+   },
+   {
+    "what": "purple_FOR_SUBAGENTS_ONLY",
+    "fg": "#981c84",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 7.024129852714573
+   },
+   {
+    "what": "pink_FOR_SUBAGENTS_ONLY",
+    "fg": "#ba41a3",
+    "bg": "#f9f9f6",
+    "floor": 4.5,
+    "ratio": 4.552906017414033
+   },
+   {
+    "what": "rainbow_red",
+    "fg": "#df2501",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.522034868932181
+   },
+   {
+    "what": "rainbow_orange",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "rainbow_yellow",
+    "fg": "#8b6f01",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.553739668807912
+   },
+   {
+    "what": "rainbow_green",
+    "fg": "#348300",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.53246124635124
+   },
+   {
+    "what": "rainbow_blue",
+    "fg": "#007d9b",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.5178303673973135
+   },
+   {
+    "what": "rainbow_indigo",
+    "fg": "#0056ff",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 5.273741902576697
+   },
+   {
+    "what": "rainbow_violet",
+    "fg": "#ba41a3",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.552906017414033
+   },
+   {
+    "what": "rainbow_red_shimmer",
+    "fg": "#923901",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.090377658016775
+   },
+   {
+    "what": "rainbow_orange_shimmer",
+    "fg": "#8b6f01",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 4.553739668807912
+   },
+   {
+    "what": "rainbow_yellow_shimmer",
+    "fg": "#5d5701",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.037096640341563
+   },
+   {
+    "what": "rainbow_green_shimmer",
+    "fg": "#00632f",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.045474591405245
+   },
+   {
+    "what": "rainbow_blue_shimmer",
+    "fg": "#005d74",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.065106687348928
+   },
+   {
+    "what": "rainbow_indigo_shimmer",
+    "fg": "#3349bb",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.081645228786057
+   },
+   {
+    "what": "rainbow_violet_shimmer",
+    "fg": "#981c84",
+    "bg": "#f9f9f6",
+    "floor": 3,
+    "ratio": 7.024129852714573
+   },
+   {
+    "what": "text on userMessageBackground",
+    "fg": "#010101",
+    "bg": "#e0e0dd",
+    "floor": 4.5,
+    "ratio": 15.780018887728037
+   },
+   {
+    "what": "text on userMessageBackgroundHover",
+    "fg": "#010101",
+    "bg": "#d3d3d0",
+    "floor": 4.5,
+    "ratio": 13.913831844657796
+   },
+   {
+    "what": "text on composerSidebarBackground",
+    "fg": "#010101",
+    "bg": "#e8e8e5",
+    "floor": 4.5,
+    "ratio": 17.002023207904006
+   },
+   {
+    "what": "text on bashMessageBackgroundColor",
+    "fg": "#010101",
+    "bg": "#f0d8e9",
+    "floor": 4.5,
+    "ratio": 15.609281388285035
+   },
+   {
+    "what": "text on memoryBackgroundColor",
+    "fg": "#010101",
+    "bg": "#c8e6f1",
+    "floor": 4.5,
+    "ratio": 15.94795978975599
+   },
+   {
+    "what": "text on selectionBg",
+    "fg": "#010101",
+    "bg": "#b3c5e6",
+    "floor": 4.5,
+    "ratio": 11.973192567328798
+   },
+   {
+    "what": "text on diffAdded",
+    "fg": "#010101",
+    "bg": "#c5e7ba",
+    "floor": 4.5,
+    "ratio": 15.419856159923715
+   },
+   {
+    "what": "text on diffRemoved",
+    "fg": "#010101",
+    "bg": "#ffcec4",
+    "floor": 4.5,
+    "ratio": 14.787856860911132
+   },
+   {
+    "what": "text on diffAddedDimmed",
+    "fg": "#010101",
+    "bg": "#dcefd5",
+    "floor": 4.5,
+    "ratio": 17.245857144166973
+   },
+   {
+    "what": "text on diffRemovedDimmed",
+    "fg": "#010101",
+    "bg": "#fee1da",
+    "floor": 4.5,
+    "ratio": 16.894086495369184
+   },
+   {
+    "what": "text on rate_limit_empty",
+    "fg": "#010101",
+    "bg": "#cbcbc8",
+    "floor": 4.5,
+    "ratio": 12.837770346681989
+   },
+   {
+    "what": "inverseText on claude",
+    "fg": "#ffffff",
+    "bg": "#923901",
+    "floor": 4.5,
+    "ratio": 7.478931551903795
+   },
+   {
+    "what": "inverseText on permission",
+    "fg": "#ffffff",
+    "bg": "#0056ff",
+    "floor": 4.5,
+    "ratio": 5.562743850065975
+   },
+   {
+    "what": "inverseText on autoAccept",
+    "fg": "#ffffff",
+    "bg": "#981c84",
+    "floor": 4.5,
+    "ratio": 7.409053355675583
+   },
+   {
+    "what": "inverseText on error",
+    "fg": "#ffffff",
+    "bg": "#df2501",
+    "floor": 4.5,
+    "ratio": 4.769843143944141
+   },
+   {
+    "what": "inverseText on success",
+    "fg": "#ffffff",
+    "bg": "#348300",
+    "floor": 4.5,
+    "ratio": 4.780840888607755
+   },
+   {
+    "what": "inverseText on warning",
+    "fg": "#ffffff",
+    "bg": "#8b6f01",
+    "floor": 4.5,
+    "ratio": 4.803285372210968
+   },
+   {
+    "what": "addedWord on diffAdded",
+    "fg": "#00632f",
+    "bg": "#c5e7ba",
+    "floor": 3,
+    "ratio": 5.489969142841849
+   },
+   {
+    "what": "removedWord on diffRemoved",
+    "fg": "#923901",
+    "bg": "#ffcec4",
+    "floor": 3,
+    "ratio": 5.298512141891265
+   }
+  ],
+  "brand": {
+   "Black": "#010101",
+   "White": "#ffffff",
+   "Paper": "#f9f9f6",
+   "Clay": "#f2f2eb",
+   "Ice": "#d3edff",
+   "Mint": "#e5ffd2",
+   "Butter": "#f5f0ae",
+   "Cobalt": "#0056ff",
+   "Leaf": "#388b00",
+   "Flame": "#fa2a00",
+   "Dove": "#abacbb",
+   "Sage": "#8ca372",
+   "Khaki": "#afa477",
+   "Coral": "#ff8042",
+   "Honey": "#ffd862",
+   "Emerald": "#27d271",
+   "Sky": "#00ccfa",
+   "Periwinkle": "#88a5ff",
+   "Orchid": "#f97cde"
+  },
+  "slotBrand": {
+   "black": "Black",
+   "red": null,
+   "green": null,
+   "yellow": null,
+   "blue": "Cobalt",
+   "magenta": null,
+   "cyan": null,
+   "white": "Clay",
+   "blackBright": null,
+   "redBright": null,
+   "greenBright": null,
+   "yellowBright": null,
+   "blueBright": null,
+   "magentaBright": null,
+   "cyanBright": null,
+   "whiteBright": "White"
+  }
+ }
+}

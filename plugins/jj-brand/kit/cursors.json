@@ -1,0 +1,98 @@
+{
+ "real": [
+  {
+   "name": "Coral",
+   "hex": "#ff8042",
+   "ratio": 2.36
+  },
+  {
+   "name": "Honey",
+   "hex": "#ffd862",
+   "ratio": 1.31
+  },
+  {
+   "name": "Emerald",
+   "hex": "#27d271",
+   "ratio": 1.89
+  },
+  {
+   "name": "Sky",
+   "hex": "#00ccfa",
+   "ratio": 1.81
+  },
+  {
+   "name": "Periwinkle",
+   "hex": "#88a5ff",
+   "ratio": 2.24
+  },
+  {
+   "name": "Orchid",
+   "hex": "#f97cde",
+   "ratio": 2.22
+  }
+ ],
+ "dark": [
+  {
+   "name": "Coral",
+   "hex": "#ff8042",
+   "ratio": 8.37
+  },
+  {
+   "name": "Honey",
+   "hex": "#ffd862",
+   "ratio": 15.16
+  },
+  {
+   "name": "Emerald",
+   "hex": "#27d271",
+   "ratio": 10.48
+  },
+  {
+   "name": "Sky",
+   "hex": "#00ccfa",
+   "ratio": 10.95
+  },
+  {
+   "name": "Periwinkle",
+   "hex": "#88a5ff",
+   "ratio": 8.82
+  },
+  {
+   "name": "Orchid",
+   "hex": "#f97cde",
+   "ratio": 8.91
+  }
+ ],
+ "light": [
+  {
+   "name": "Coral",
+   "hex": "#c24f01",
+   "ratio": 4.51
+  },
+  {
+   "name": "Honey",
+   "hex": "#8b6f01",
+   "ratio": 4.55
+  },
+  {
+   "name": "Emerald",
+   "hex": "#008442",
+   "ratio": 4.55
+  },
+  {
+   "name": "Sky",
+   "hex": "#007d9b",
+   "ratio": 4.52
+  },
+  {
+   "name": "Periwinkle",
+   "hex": "#4c69dd",
+   "ratio": 4.55
+  },
+  {
+   "name": "Orchid",
+   "hex": "#ba41a3",
+   "ratio": 4.55
+  }
+ ]
+}

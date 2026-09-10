@@ -1,0 +1,32 @@
+# Jack & Jill Dark
+[colors.primary]
+background = "#010101"
+foreground = "#f2f2eb"
+
+[colors.cursor]
+cursor = "#ff8042"
+text = "#010101"
+
+[colors.selection]
+background = "#252e49"
+text = "#f2f2eb"
+
+[colors.normal]
+black = "#010101"
+red = "#fa2a00"
+green = "#27d271"
+yellow = "#ffd862"
+blue = "#88a5ff"
+magenta = "#f97cde"
+cyan = "#00ccfa"
+white = "#f2f2eb"
+
+[colors.bright]
+black = "#abacbb"
+red = "#ff8042"
+green = "#e5ffd2"
+yellow = "#f5f0ae"
+blue = "#d3edff"
+magenta = "#ffc1ee"
+cyan = "#9ce4fd"
+white = "#ffffff"

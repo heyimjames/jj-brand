@@ -1,0 +1,23 @@
+{
+  "name": "jack-and-jill",
+  "description": "Jack & Jill brand tooling for the terminal: a measured Claude Code theme and the palette in every terminal's own syntax.",
+  "owner": {
+    "name": "Jack & Jill"
+  },
+  "plugins": [
+    {
+      "name": "jj-brand",
+      "source": "./plugins/jj-brand",
+      "description": "The Jack & Jill palette as a Claude Code theme (two grounds, 72 roles, every pair measured against WCAG AA) plus a terminal kit: Terminal.app, Ghostty, iTerm2, Kitty, Alacritty, WezTerm and VS Code configs, a brand status line, LS_COLORS/bat/fzf/git colours, and a one-click ground toggle.",
+      "category": "design",
+      "keywords": [
+        "theme",
+        "brand",
+        "terminal",
+        "accessibility",
+        "statusline",
+        "jack-and-jill"
+      ]
+    }
+  ]
+}
