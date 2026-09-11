@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "jj-brand",
   "displayName": "Jack & Jill \u2014 brand terminal",
-  "description": "The brand palette, measured: a Claude Code theme on two grounds with all 72 roles set, plus the same sixteen slots in every terminal's own syntax, a brand status line and a one-click ground toggle.",
-  "version": "1.0.0",
+  "description": "The brand palette, measured: a Claude Code theme on two grounds with all 72 roles set, the same sixteen slots in every terminal's own syntax, a brand status line, a ground that follows the system appearance, and the house voice as an output style.",
+  "version": "1.1.0",
   "author": {
     "name": "Jack & Jill"
   },
