@@ -27,7 +27,10 @@ import {
   toOklch,
 } from "/Users/james/Documents/Projects/jj-grid-studio/src/lib/grid/color";
 
-const REPO = "/Users/james/Documents/Projects/jj-grid-studio";
+/* Point this at your checkout of the studio, or set JJ_STUDIO. The import
+ * above still needs a literal path — TypeScript module specifiers cannot be
+ * computed — so change both if yours lives elsewhere. */
+const REPO = process.env.JJ_STUDIO ?? "/Users/james/Documents/Projects/jj-grid-studio";
 const OUT = "/private/tmp/claude-501/-Users-james-Documents-Projects-jj-grid-studio/ac99f680-eb59-46fb-a709-2af4b84b1e47/scratchpad/jj/out";
 
 /* ---------------------------------------------------------------- the brand */
