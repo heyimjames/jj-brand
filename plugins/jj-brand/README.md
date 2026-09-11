@@ -18,7 +18,7 @@ its 256 cube. That indirection is also what makes one theme follow both grounds.
 ## Install
 
 ```
-/plugin marketplace add jack-and-jill/jj-brand
+/plugin marketplace add heyimjames/jj-brand
 /plugin install jj-brand@jack-and-jill
 ```
 
@@ -26,6 +26,11 @@ Then the terminal side, once:
 
 ```
 ~/.claude/plugins/marketplaces/jack-and-jill/plugins/jj-brand/install.sh --all
+```
+
+(that path is the marketplace clone; `--all` adds the Dock toggle and the flashing cursor)
+
+```
 /theme        # pick "Jack & Jill"
 exec zsh      # for the shell palette
 ```
