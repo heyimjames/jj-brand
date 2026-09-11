@@ -204,7 +204,12 @@ def main():
 
     # Which ground Claude Code is themed for. Deliberately NOT a claim about the
     # window: see the note on the primary ink.
-    parts.append(c("magenta", "☀" if light else "☾"))
+    glyph = "☀" if light else "☾"
+    try:
+        m = (DIR / ".ground-mode").read_text().strip() or "auto"
+    except Exception:
+        m = "auto"
+    parts.append(c("magenta", glyph) + (c("blackBright", " auto") if m == "auto" else ""))
 
     sys.stdout.write(c("blackBright", "  ").join(parts))
 

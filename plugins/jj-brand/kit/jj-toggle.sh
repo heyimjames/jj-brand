@@ -16,11 +16,19 @@ IX="$D/.cursor-index"
 
 case "$1" in
 plan)
-  if [ -f "$ACTIVE" ] && grep -q '"base": *"light-ansi"' "$ACTIVE"; then
-    MODE=dark; LABEL=Dark
-  else
-    MODE=light; LABEL=Light
-  fi
+  # plan [dark|light] plans that ground; plan with no argument flips to the
+  # other one, which is what a click means.
+  case "$2" in
+    dark)  MODE=dark;  LABEL=Dark ;;
+    light) MODE=light; LABEL=Light ;;
+    "")
+      if [ -f "$ACTIVE" ] && /usr/bin/grep -q '"base": *"light-ansi"' "$ACTIVE"; then
+        MODE=dark; LABEL=Dark
+      else
+        MODE=light; LABEL=Light
+      fi ;;
+    *) echo "plan takes dark, light, or nothing" >&2; exit 2 ;;
+  esac
   # The cursor takes the NEXT magic colour on every flip: a deterministic walk,
   # so shuffling comes back around rather than repeating at random. All twelve
   # values (six hues, two grounds) clear 4.5:1 against their own ground, which

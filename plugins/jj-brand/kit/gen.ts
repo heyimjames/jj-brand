@@ -12,10 +12,6 @@
  * ground in the first place. On Paper it fires for nearly all of them, which
  * is the whole reason this file measures rather than assumes.
  * ========================================================================= */
-/* REGENERATING THIS NEEDS THE STUDIO REPO. The import below and the REPO const
- * point at a checkout of jj-grid-studio, because `lib/brand.ts` is the single
- * source of truth for the swatches and a vendored copy would drift. Change both
- * paths if your checkout lives elsewhere. */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -27,9 +23,7 @@ import {
   toOklch,
 } from "/Users/james/Documents/Projects/jj-grid-studio/src/lib/grid/color";
 
-/* Point this at your checkout of the studio, or set JJ_STUDIO. The import
- * above still needs a literal path — TypeScript module specifiers cannot be
- * computed — so change both if yours lives elsewhere. */
+/* Point this at your checkout of the studio, or set JJ_STUDIO. */
 const REPO = process.env.JJ_STUDIO ?? "/Users/james/Documents/Projects/jj-grid-studio";
 const OUT = "/private/tmp/claude-501/-Users-james-Documents-Projects-jj-grid-studio/ac99f680-eb59-46fb-a709-2af4b84b1e47/scratchpad/jj/out";
 
@@ -154,10 +148,17 @@ function lightSlots(): Slots {
     cyan: aa("Sky"),
     white: need("Clay"),
     blackBright: relight(need("Dove"), g, 4.5),
-    redBright: aaa("Coral"),
-    greenBright: aaa("Emerald"),
+    /* The AAA tier exists to separate a pair that shares a HUE, and only three
+     * of the six do. Flame/Coral, Leaf/Emerald and Cobalt/Periwinkle are
+     * already different brand colours, so holding the bright half darker buys
+     * nothing and costs the hue its character: Coral at 7:1 reads as brown,
+     * which is what Claude's own accent came out as on Paper. Those three take
+     * their own hue at the text floor. Honey/Butter, and Orchid and Sky twice
+     * over, do repeat, so they keep the darker tier to stay tellable apart. */
+    redBright: aa("Coral"),
+    greenBright: aa("Emerald"),
     yellowBright: aaa("Butter"),
-    blueBright: aaa("Periwinkle"),
+    blueBright: aa("Periwinkle"),
     magentaBright: aaa("Orchid"),
     cyanBright: aaa("Sky"),
     whiteBright: need("White"),
@@ -251,10 +252,14 @@ function overrides(G: Ground): { theme: Record<string, string>; audit: Audit[] }
     fastMode: A("redBright"),
     fastModeShimmer: A("yellowBright"),
 
-    text: dark ? A("whiteBright") : A("black"),
+    /* Body text is Clay on Black, not pure White: 18.56:1 is still far past the
+     * floor, and the warm off-white is the brand's own paper rather than a
+     * clinical maximum. Pure White is kept for BOLD, so emphasis has somewhere
+     * to climb to instead of everything sitting at the ceiling. */
+    text: dark ? A("white") : A("black"),
     inverseText: dark ? A("black") : A("whiteBright"),
     inactive: rgb(dimAt(G.ground, 4.5, doveHue)),
-    inactiveShimmer: dark ? A("white") : A("black"),
+    inactiveShimmer: dark ? A("whiteBright") : A("black"),
     subtle: rgb(subtle),
     promptBorder: rgb(promptBorder),
     promptBorderShimmer: A("blackBright"),
@@ -372,7 +377,7 @@ for (const G of GROUNDS) {
     join(themesDir, `${G.slug}.json`),
     JSON.stringify({ name: G.name, base: G.base, overrides: theme }, null, 2) + "\n",
   );
-  spec[G.slug] = { name: G.name, ground: G.ground, slots: G.slots, cursor: relight(need("Coral"), G.ground, 4.5), text: G.base === "dark-ansi" ? G.slots.whiteBright : G.slots.black, bold: G.base === "dark-ansi" ? G.slots.white : G.slots.black, selection: (theme.selectionBg as string) };
+  spec[G.slug] = { name: G.name, ground: G.ground, slots: G.slots, cursor: relight(need("Coral"), G.ground, 4.5), text: G.base === "dark-ansi" ? G.slots.white : G.slots.black, bold: G.base === "dark-ansi" ? G.slots.whiteBright : G.slots.black, selection: (theme.selectionBg as string) };
 
   console.log(`\n\x1b[1m${G.name}\x1b[0m  base ${G.base}  ground ${G.ground}  (${Object.keys(theme).length} roles)`);
   console.log("  slots:");

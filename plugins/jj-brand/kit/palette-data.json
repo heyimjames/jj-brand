@@ -697,10 +697,10 @@
    "cyan": "#007d9b",
    "white": "#f2f2eb",
    "blackBright": "#717280",
-   "redBright": "#923901",
-   "greenBright": "#00632f",
+   "redBright": "#c24f01",
+   "greenBright": "#008442",
    "yellowBright": "#5d5701",
-   "blueBright": "#3349bb",
+   "blueBright": "#4c69dd",
    "magentaBright": "#981c84",
    "cyanBright": "#005d74",
    "whiteBright": "#ffffff"
@@ -782,10 +782,10 @@
   "audit": [
    {
     "what": "claude",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 4.5,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "claudeShimmer",
@@ -796,17 +796,17 @@
    },
    {
     "what": "briefLabelClaude",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 4.5,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "clawd_body",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "bashBorder",
@@ -859,10 +859,10 @@
    },
    {
     "what": "permissionShimmer",
-    "fg": "#3349bb",
+    "fg": "#4c69dd",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.081645228786057
+    "ratio": 4.55372502084008
    },
    {
     "what": "suggestion",
@@ -894,10 +894,10 @@
    },
    {
     "what": "claudeBlueShimmer_FOR_SYSTEM_SPINNER",
-    "fg": "#3349bb",
+    "fg": "#4c69dd",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.081645228786057
+    "ratio": 4.55372502084008
    },
    {
     "what": "professionalBlue",
@@ -971,10 +971,10 @@
    },
    {
     "what": "fastMode",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "fastModeShimmer",
@@ -1027,17 +1027,17 @@
    },
    {
     "what": "diffAddedWord",
-    "fg": "#00632f",
+    "fg": "#008442",
     "bg": "#f9f9f6",
     "floor": 4.5,
-    "ratio": 7.045474591405245
+    "ratio": 4.546286345790497
    },
    {
     "what": "diffRemovedWord",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 4.5,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "red_FOR_SUBAGENTS_ONLY",
@@ -1048,10 +1048,10 @@
    },
    {
     "what": "orange_FOR_SUBAGENTS_ONLY",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 4.5,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "yellow_FOR_SUBAGENTS_ONLY",
@@ -1104,10 +1104,10 @@
    },
    {
     "what": "rainbow_orange",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "rainbow_yellow",
@@ -1146,10 +1146,10 @@
    },
    {
     "what": "rainbow_red_shimmer",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.090377658016775
+    "ratio": 4.511748700836115
    },
    {
     "what": "rainbow_orange_shimmer",
@@ -1167,10 +1167,10 @@
    },
    {
     "what": "rainbow_green_shimmer",
-    "fg": "#00632f",
+    "fg": "#008442",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.045474591405245
+    "ratio": 4.546286345790497
    },
    {
     "what": "rainbow_blue_shimmer",
@@ -1181,10 +1181,10 @@
    },
    {
     "what": "rainbow_indigo_shimmer",
-    "fg": "#3349bb",
+    "fg": "#4c69dd",
     "bg": "#f9f9f6",
     "floor": 3,
-    "ratio": 7.081645228786057
+    "ratio": 4.55372502084008
    },
    {
     "what": "rainbow_violet_shimmer",
@@ -1273,9 +1273,9 @@
    {
     "what": "inverseText on claude",
     "fg": "#ffffff",
-    "bg": "#923901",
+    "bg": "#c24f01",
     "floor": 4.5,
-    "ratio": 7.478931551903795
+    "ratio": 4.758993292098116
    },
    {
     "what": "inverseText on permission",
@@ -1314,17 +1314,17 @@
    },
    {
     "what": "addedWord on diffAdded",
-    "fg": "#00632f",
+    "fg": "#008442",
     "bg": "#c5e7ba",
     "floor": 3,
-    "ratio": 5.489969142841849
+    "ratio": 3.5425536532855335
    },
    {
     "what": "removedWord on diffRemoved",
-    "fg": "#923901",
+    "fg": "#c24f01",
     "bg": "#ffcec4",
     "floor": 3,
-    "ratio": 5.298512141891265
+    "ratio": 3.3715489393591533
    }
   ],
   "brand": {
