@@ -1,0 +1,41 @@
+{
+ "fill": {
+  "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+ },
+ "appearances": {
+  "dark-color": {
+   "fill": {
+    "solid": "srgb:0.00392,0.00392,0.00392,1.00000"
+   }
+  }
+ },
+ "groups": [
+  {
+   "layers": [
+    {
+     "image-name": "chips.png",
+     "name": "chips",
+     "position": {
+      "scale": 1.0,
+      "translation-in-points": [
+       0,
+       0
+      ]
+     }
+    }
+   ],
+   "shadow": {
+    "kind": "neutral",
+    "opacity": 0
+   },
+   "specular": false,
+   "translucency": {
+    "enabled": false,
+    "value": 0.5
+   }
+  }
+ ],
+ "supported-platforms": {
+  "squares": "shared"
+ }
+}

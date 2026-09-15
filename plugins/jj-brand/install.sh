@@ -128,6 +128,14 @@ plistlib.dump({
     "NSHighResolutionCapable": True,
 }, open(sys.argv[1], "wb"))
 INFOPY
+  # macOS 26 serves a DARK app icon from an asset catalogue compiled out of Icon
+  # Composer's .icon format. Without actool there is no dark variant, which is a
+  # missing nicety rather than a broken install, so it degrades quietly.
+  if xcrun --find actool >/dev/null 2>&1; then
+    /usr/bin/python3 "$DEST/gen-appicon.py" >/dev/null 2>&1 && \
+      cp "$DEST/.appicon-build/Assets.car" "$APP/Contents/Resources/Assets.car" && \
+      /usr/libexec/PlistBuddy -c "Add :CFBundleIconName string AppIcon" "$APP/Contents/Info.plist" >/dev/null 2>&1
+  fi
   codesign --force --deep -s - "$APP" >/dev/null 2>&1 || true
   rm -rf "$(getconf DARWIN_USER_CACHE_DIR)"com.apple.iconservices* 2>/dev/null || true
   /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP" >/dev/null 2>&1 || true

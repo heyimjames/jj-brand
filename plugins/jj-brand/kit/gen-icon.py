@@ -66,11 +66,13 @@ def build(ground, hairline, path):
             cells.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{hh:.1f}" '
                          f'rx="{crad:.1f}" fill="none" stroke="{hairline[0]}" '
                          f'stroke-opacity="{hairline[1]}" stroke-width="2.5"/>')
+    card = ("" if ground is None else
+            f'<rect x="{MARGIN}" y="{MARGIN}" width="{CARD}" height="{CARD}" rx="{rad}" fill="{ground}"/>')
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{R}" height="{R}" viewBox="0 0 {R} {R}">'
-           f'<rect x="{MARGIN}" y="{MARGIN}" width="{CARD}" height="{CARD}" rx="{rad}" fill="{ground}"/>'
-           + "".join(cells) +
-           f'<rect x="{MARGIN}" y="{MARGIN}" width="{CARD}" height="{CARD}" rx="{rad}" fill="none" '
-           f'stroke="{hairline[0]}" stroke-opacity="{hairline[1] * 0.8}" stroke-width="3"/></svg>')
+           + card + "".join(cells) +
+           ("" if ground is None else
+            f'<rect x="{MARGIN}" y="{MARGIN}" width="{CARD}" height="{CARD}" rx="{rad}" fill="none" '
+            f'stroke="{hairline[0]}" stroke-opacity="{hairline[1] * 0.8}" stroke-width="3"/>') + '</svg>')
     html = D / f".icon-{path}.html"
     html.write_text('<style>html,body{margin:0;background:transparent}</style>' + svg)
     subprocess.run(["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
@@ -82,5 +84,8 @@ def build(ground, hairline, path):
 
 
 build("#ffffff", ("#010101", 0.16), "icon-light")
+# and the chips alone, for the .icon format: macOS draws the card itself there,
+# so the artwork must be transparent outside the masonry block
+build(None, ("#010101", 0.16), "icon-chips")
 build(swatch["Black"], ("#ffffff", 0.20), "icon-dark")
 subprocess.run(["cp", str(D / "icon-light.png"), str(D / "icon.png")])

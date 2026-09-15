@@ -16,6 +16,9 @@ LSR=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.
 VER="${1:-$(date +%Y.%m.%d.%H%M)}"
 
 /usr/bin/python3 "$D/gen-icon.py"
+if command -v xcrun >/dev/null 2>&1 && xcrun --find actool >/dev/null 2>&1; then
+  /usr/bin/python3 "$D/gen-appicon.py" || echo "  (no dark variant: actool failed)"
+fi
 TMP=$(mktemp -d)/jj.iconset; mkdir -p "$TMP"
 for pair in 16:icon_16x16 32:icon_16x16@2x 32:icon_32x32 64:icon_32x32@2x \
             128:icon_128x128 256:icon_128x128@2x 256:icon_256x256 \
@@ -46,8 +49,17 @@ else
 fi
 chmod +x "$APP/Contents/MacOS/jj"
 cp "$D/applet.icns" "$APP/Contents/Resources/icon.icns"
+# The asset catalogue carries the LIGHT and DARK appearances; the icns stays as
+# the fallback for anything that predates them. CFBundleIconName outranks
+# CFBundleIconFile, which is the whole reason the stock applet icon used to win
+# — here that precedence is what we want, because the catalogue is ours.
+if [ -f "$D/.appicon-build/Assets.car" ]; then
+  cp "$D/.appicon-build/Assets.car" "$APP/Contents/Resources/Assets.car"
+  cp "$D/.appicon-build/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns" 2>/dev/null || true
+  ICONNAME=AppIcon
+fi
 printf 'APPL????' > "$APP/Contents/PkgInfo"
-VER="$VER" /usr/bin/python3 - "$APP/Contents/Info.plist" <<'INFOPY'
+VER="$VER" ICONNAME="${ICONNAME:-}" /usr/bin/python3 - "$APP/Contents/Info.plist" <<'INFOPY'
 import os, plistlib, sys
 v = os.environ["VER"]
 plistlib.dump({
@@ -57,6 +69,7 @@ plistlib.dump({
     "CFBundleInfoDictionaryVersion": "6.0", "CFBundlePackageType": "APPL",
     "CFBundleShortVersionString": v, "CFBundleVersion": v,
     "LSMinimumSystemVersion": "11.0", "LSUIElement": True,
+    **({"CFBundleIconName": os.environ["ICONNAME"]} if os.environ.get("ICONNAME") else {}),
     "LSRequiresNativeExecution": True,
     "LSArchitecturePriority": ["arm64", "x86_64"],
     "NSHighResolutionCapable": True,
