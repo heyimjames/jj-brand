@@ -43,14 +43,13 @@ CORAL = magic[0]
 # A band of the matrix: mostly resting, a few cells that found something. The
 # positions are fixed rather than random so the message is the same every time.
 WIDTH = 34
-# Six lit cells in 102: 5.9%, which is DEFAULT_MAGIC's 0.06 almost exactly, and
-# that is the point rather than a coincidence. One cell per hue, at fixed
-# positions so the message is identical every time it prints.
-LIT = {(3, 0): 0, (9, 2): 1, (14, 1): 2, (21, 0): 3, (27, 2): 4, (31, 1): 5}
+# The magic six, swept across the band in diagonal pairs so it reads as designed
+# rather than scattered. Every cell carries a hue here: this is the one moment
+# the palette is the subject, not a signal inside something else, which is why
+# the sparseness rule that governs the artwork does not apply.
 rows = []
 for r in range(3):
-    cells = [rgb(magic[LIT[(c, r)]], "\u25aa") if (c, r) in LIT else rgb(DOVE, "\u25aa")
-             for c in range(WIDTH)]
+    cells = [rgb(magic[((c + r * 2) // 2) % 6], "\u25aa") for c in range(WIDTH)]
     rows.append("  " + " ".join(cells))
 
 out = [
@@ -59,7 +58,7 @@ out = [
     "",
     *rows,
     "",
-    "  Two grounds, sixteen slots, seventy-two roles, every pair measured.",
+    "  Your terminal, in the house colours.",
     "",
     "  " + rgb(DOVE, "Next") + "   Restart Claude Code. It is already wearing it.",
     "         Open a new tab, or run exec zsh, for the shell palette.",

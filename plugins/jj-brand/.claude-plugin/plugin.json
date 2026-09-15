@@ -3,7 +3,7 @@
   "name": "jj-brand",
   "displayName": "Jack & Jill \u2014 brand terminal",
   "description": "The brand palette, measured: a Claude Code theme on two grounds with all 72 roles set, the same sixteen slots in every terminal's own syntax, a brand status line, a ground that follows the system appearance, and the house voice as an output style.",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "author": {
     "name": "Jack & Jill"
   },
