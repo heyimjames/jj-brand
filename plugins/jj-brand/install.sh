@@ -95,36 +95,43 @@ sh "$DEST/dist/shell/jj-git-colors.sh" >/dev/null 2>&1 && say "git colours set (
 
 # --------------------------------------------------------------- the Dock app
 if [ "$DOCK" -eq 1 ]; then
-  APP="$HOME/Applications/Jack & Jill Theme.app"
-  mkdir -p "$HOME/Applications"
-  rm -rf "$APP"
-  osacompile -o "$APP" "$DEST/jj-theme-toggle.applescript"
-  ICON=$(mktemp -d)/jj.iconset; mkdir -p "$ICON"
-  for pair in "16 icon_16x16" "32 icon_16x16@2x" "32 icon_32x32" "64 icon_32x32@2x" \
-              "128 icon_128x128" "256 icon_128x128@2x" "256 icon_256x256" \
-              "512 icon_256x256@2x" "512 icon_512x512"; do
-    SZ=$(echo "$pair" | cut -d' ' -f1); NM=$(echo "$pair" | cut -d' ' -f2)
-    sips -z "$SZ" "$SZ" "$DEST/icon.png" --out "$ICON/$NM.png" >/dev/null
-  done
-  cp "$DEST/icon.png" "$ICON/icon_512x512@2x.png"
-  iconutil -c icns "$ICON" -o "$APP/Contents/Resources/applet.icns"
-  /usr/bin/python3 - "$APP/Contents/Info.plist" <<'PY'
+  # A PLAIN SHELL-SCRIPT BUNDLE, not an osacompile applet. An applet ships an
+  # asset catalogue, and CFBundleIconName resolves from that catalogue and
+  # outranks CFBundleIconFile, so the stock applet icon wins no matter what you
+  # put in Resources. Built by hand, every input is ours.
+  APP="$HOME/Applications/Jack & Jill.app"
+  mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+  cat > "$APP/Contents/MacOS/jj" <<'APPSH'
+#!/bin/sh
+OUT=$("$HOME/.claude/themes/terminal-app/jj-ground.sh" cycle 2>&1)
+RC=$?
+if [ $RC -ne 0 ]; then
+  /usr/bin/osascript -e "display alert \"Jack & Jill\" message (system attribute \"JJOUT\") as warning" 2>/dev/null
+  exit 1
+fi
+JJOUT="$OUT" /usr/bin/osascript -e "display notification (system attribute \"JJOUT\") with title \"Jack & Jill\""
+APPSH
+  chmod +x "$APP/Contents/MacOS/jj"
+  cp "$DEST/applet.icns" "$APP/Contents/Resources/icon.icns"
+  printf 'APPL????' > "$APP/Contents/PkgInfo"
+  /usr/bin/python3 - "$APP/Contents/Info.plist" <<'INFOPY'
 import plistlib, sys
-p = sys.argv[1]; d = plistlib.load(open(p, 'rb'))
-d["LSUIElement"] = True          # a click must not steal focus from Terminal
-d["CFBundleName"] = "Jack & Jill Theme"
-# CFBundleIconName resolves from the ASSET CATALOGUE and takes precedence over
-# CFBundleIconFile, so leaving it set serves osacompile's default applet icon
-# and applet.icns is never consulted. Both it and the catalogue have to go.
-d.pop("CFBundleIconName", None)
-plistlib.dump(d, open(p, 'wb'))
-PY
-  rm -f "$APP/Contents/Resources/Assets.car"
+plistlib.dump({
+    "CFBundleName": "Jack & Jill", "CFBundleDisplayName": "Jack & Jill",
+    "CFBundleExecutable": "jj", "CFBundleIconFile": "icon",
+    "CFBundleIdentifier": "ai.jackandjill.terminal-ground",
+    "CFBundleInfoDictionaryVersion": "6.0", "CFBundlePackageType": "APPL",
+    "CFBundleShortVersionString": "1.1.3", "CFBundleVersion": "1.1.3",
+    "LSMinimumSystemVersion": "11.0",
+    "LSUIElement": True,
+    "NSHighResolutionCapable": True,
+}, open(sys.argv[1], "wb"))
+INFOPY
   codesign --force --deep -s - "$APP" >/dev/null 2>&1 || true
-  # LaunchServices caches the icon per bundle; a touch alone is not enough
+  rm -rf "$(getconf DARWIN_USER_CACHE_DIR)"com.apple.iconservices* 2>/dev/null || true
   /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP" >/dev/null 2>&1 || true
-  /usr/bin/python3 - "$APP" <<'PY'
-import plistlib, subprocess, sys, os
+  /usr/bin/python3 - "$APP" <<'DOCKPY'
+import plistlib, subprocess, sys
 APP = sys.argv[1]
 url = "file://" + APP.replace(" ", "%20").replace("&", "%26") + "/"
 d = plistlib.loads(subprocess.run(["defaults","export","com.apple.dock","-"],
@@ -132,17 +139,17 @@ d = plistlib.loads(subprocess.run(["defaults","export","com.apple.dock","-"],
 apps = d.get("persistent-apps", [])
 lbl = lambda e: e.get("tile-data", {}).get("file-data", {}).get("_CFURLString") or ""
 entry = {"GUID": 0, "tile-data": {"file-data": {"_CFURLString": url, "_CFURLStringType": 15},
-         "file-label": "Jack & Jill Theme", "file-type": 41, "is-beta": False},
+         "file-label": "Jack & Jill", "file-type": 41, "is-beta": False},
          "tile-type": "file-tile"}
-hits = [i for i, e in enumerate(apps) if "Jack" in lbl(e) and "Theme" in lbl(e)]
+hits = [i for i, e in enumerate(apps) if "Jack" in lbl(e)]
 for i in hits: apps[i] = entry
 if not hits: apps.append(entry)
 d["persistent-apps"] = apps
 open("/tmp/jj-dock.plist","wb").write(plistlib.dumps(d))
 subprocess.run(["defaults","import","com.apple.dock","/tmp/jj-dock.plist"], check=True)
-PY
+DOCKPY
   killall Dock 2>/dev/null || true
-  say "Dock icon installed (one click flips the ground)"
+  say "Dock icon installed (one click cycles auto, dark, light)"
 fi
 
 # ------------------------------------------------------------- cursor agent
