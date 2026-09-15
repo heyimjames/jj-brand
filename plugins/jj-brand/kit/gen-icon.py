@@ -24,47 +24,46 @@ STUDIO = Path(os.environ.get("JJ_STUDIO", str(Path.home() / "Documents/Projects/
 src = (STUDIO / "src/lib/brand.ts").read_text()
 swatch = {m[0]: m[1] for m in re.findall(r'\{\s*name:\s*"([^"]+)",\s*hex:\s*"(#[0-9a-f]{6})"\s*\}', src)}
 
-ROWS = [["Coral", "Honey", "Emerald"], ["Sky", "Periwinkle", "Orchid"]]
-missing = [n for row in ROWS for n in row if n not in swatch]
+COLUMNS = [("Coral", "Sky"), ("Honey", "Periwinkle"), ("Emerald", "Orchid")]
+missing = [n for col in COLUMNS for n in col if n not in swatch]
 if missing:
     sys.exit(f"brand.ts has no swatch named {missing}")
 
 R, MARGIN = 1024, 56
 CARD = R - 2 * MARGIN
 rad = int(CARD * 0.235)
-COLS, NROWS = 3, 2
-CHIP_RATIO = 4 / 5                      # the studio's own card proportion
+
+# MASONRY, not scatter. Random offsets read as a wonky grid rather than as a
+# considered one, and at Dock size they read as nothing at all. So the columns
+# are strictly aligned and the block is flush on all four sides; what varies is
+# where each column's SEAM falls. Every chip is a different height, the grid is
+# obvious, and nothing looks like a mistake.
 INSET = 104
-r = R - 2 * (MARGIN + INSET)
-gapx = r * 0.10
-cw = (r - gapx * (COLS - 1)) / COLS
-chh = cw / CHIP_RATIO
-gapy = cw * 0.16
+BW = R - 2 * (MARGIN + INSET)              # block width
+gap = BW * 0.085
+cw = (BW - gap * 2) / 3
+BH = BW * 1.06                             # a touch taller than wide
+left, top = (R - BW) / 2, (R - BH) / 2
 crad = cw * 0.19
-gridH = chh * NROWS + gapy * (NROWS - 1)
-left, top = (R - (cw * COLS + gapx * (COLS - 1))) / 2, (R - gridH) / 2
 
 
-def jitter(name, axis):
-    """Deterministic offset in ±1, from the swatch's own name."""
-    h = hashlib.sha256(f"{name}:{axis}".encode()).digest()
-    return (int.from_bytes(h[:4], "big") / 0xFFFFFFFF) * 2 - 1
+def seam(name):
+    """Where this column splits, 0.36..0.64 of its height, from its own name.
+    Seeded rather than chosen so a rebuild cannot ship a different mark."""
+    h = hashlib.sha256(f"seam:{name}".encode()).digest()
+    return 0.36 + (int.from_bytes(h[:4], "big") / 0xFFFFFFFF) * 0.28
 
 
 def build(ground, hairline, path):
     cells = []
-    for ri, row in enumerate(ROWS):
-        for ci, name in enumerate(row):
-            # The offsets have to survive the Dock: a tile is ~48px, a chip ~11px,
-            # so the 8% nudge the first version used was under a pixel and the
-            # grid read as perfectly tidy. 20% of a chip is ~2px there, which is
-            # the smallest offset that is actually visible at the size that
-            # matters, and still reads as hand-placed rather than broken.
-            x = left + ci * (cw + gapx) + jitter(name, "x") * cw * 0.20
-            y = top + ri * (chh + gapy) + jitter(name, "y") * chh * 0.17
-            cells.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{chh:.1f}" '
+    for ci, (upper, lower) in enumerate(COLUMNS):
+        x = left + ci * (cw + gap)
+        inner = BH - gap
+        h1 = inner * seam(upper)
+        for name, y, hh in ((upper, top, h1), (lower, top + h1 + gap, inner - h1)):
+            cells.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{hh:.1f}" '
                          f'rx="{crad:.1f}" fill="{swatch[name]}"/>')
-            cells.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{chh:.1f}" '
+            cells.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{hh:.1f}" '
                          f'rx="{crad:.1f}" fill="none" stroke="{hairline[0]}" '
                          f'stroke-opacity="{hairline[1]}" stroke-width="2.5"/>')
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{R}" height="{R}" viewBox="0 0 {R} {R}">'
