@@ -55,6 +55,8 @@ else:
     print("  theme: selected Jack & Jill")
 PY
 
-say ""
-say "Done. Restart Claude Code and it is already wearing it."
-say "Open a new terminal tab, or run: exec zsh"
+/usr/bin/python3 "$HOME/.claude/themes/terminal-app/jj-welcome.py" 2>/dev/null || {
+  say ""
+  say "Done. Restart Claude Code and it is already wearing it."
+  say "Open a new terminal tab, or run: exec zsh"
+}

@@ -187,8 +187,11 @@ PY
   say "cursor agent running (a magic colour per blink)"
 fi
 
-echo
-echo "Next:"
+if [ -f "$DEST/jj-welcome.py" ]; then
+  /usr/bin/python3 "$DEST/jj-welcome.py"
+else
+  echo
+  echo "Next:"
 echo "  1. Restart Claude Code (or /theme -> Jack & Jill to pick it now)"
 case "${TERM_PROGRAM:-}" in
   Apple_Terminal) echo "  2. Terminal is already wearing it (new windows too)" ;;
@@ -198,3 +201,4 @@ case "${TERM_PROGRAM:-}" in
   *)              echo "  2. Your terminal's config is in $DEST/dist/ (ghostty, iterm2, kitty, alacritty, wezterm, vscode)" ;;
 esac
 echo "  3. exec zsh   (or open a new tab) for the shell palette"
+fi
