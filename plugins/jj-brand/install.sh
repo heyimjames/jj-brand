@@ -101,16 +101,15 @@ if [ "$DOCK" -eq 1 ]; then
   # put in Resources. Built by hand, every input is ours.
   APP="$HOME/Applications/Jack & Jill.app"
   mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-  cat > "$APP/Contents/MacOS/jj" <<'APPSH'
-#!/bin/sh
-OUT=$("$HOME/.claude/themes/terminal-app/jj-ground.sh" cycle 2>&1)
-RC=$?
-if [ $RC -ne 0 ]; then
-  /usr/bin/osascript -e "display alert \"Jack & Jill\" message (system attribute \"JJOUT\") as warning" 2>/dev/null
-  exit 1
-fi
-JJOUT="$OUT" /usr/bin/osascript -e "display notification (system attribute \"JJOUT\") with title \"Jack & Jill\""
-APPSH
+  # A REAL BINARY, not a script: a bundle whose executable is a shell script
+  # makes macOS ask to install Rosetta, because there is no Mach-O header to
+  # read an architecture from and LaunchServices assumes x86_64.
+  if command -v clang >/dev/null 2>&1; then
+    clang -arch arm64 -arch x86_64 -O2 -o "$APP/Contents/MacOS/jj" "$DEST/jj-launcher.c"
+  else
+    say "clang not found (install the Command Line Tools): using a script executable, which asks for Rosetta"
+    cp "$DEST/jj-app.sh" "$APP/Contents/MacOS/jj"
+  fi
   chmod +x "$APP/Contents/MacOS/jj"
   cp "$DEST/applet.icns" "$APP/Contents/Resources/icon.icns"
   printf 'APPL????' > "$APP/Contents/PkgInfo"
@@ -124,6 +123,8 @@ plistlib.dump({
     "CFBundleShortVersionString": "1.1.3", "CFBundleVersion": "1.1.3",
     "LSMinimumSystemVersion": "11.0",
     "LSUIElement": True,
+    "LSRequiresNativeExecution": True,
+    "LSArchitecturePriority": ["arm64", "x86_64"],
     "NSHighResolutionCapable": True,
 }, open(sys.argv[1], "wb"))
 INFOPY

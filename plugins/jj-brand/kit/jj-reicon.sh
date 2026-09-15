@@ -33,15 +33,17 @@ find "$(getconf DARWIN_USER_CACHE_DIR)" -maxdepth 2 \
      \( -name 'com.apple.iconservices*' -o -name '*.iconcache' \) -exec rm -rf {} + 2>/dev/null || true
 
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cat > "$APP/Contents/MacOS/jj" <<'APPSH'
-#!/bin/sh
-OUT=$("$HOME/.claude/themes/terminal-app/jj-ground.sh" cycle 2>&1)
-if [ $? -ne 0 ]; then
-  JJOUT="$OUT" /usr/bin/osascript -e 'display alert "Jack & Jill" message (system attribute "JJOUT") as warning'
-  exit 1
+# A REAL BINARY, not a script. A bundle whose executable is a shell script makes
+# macOS ask to install Rosetta: there is no Mach-O header to read an
+# architecture from, so LaunchServices assumes x86_64. Built for both, so a
+# teammate on Intel gets a native launch too. If clang is missing the script
+# stands in and the prompt comes back, which the message says out loud.
+if command -v clang >/dev/null 2>&1; then
+  clang -arch arm64 -arch x86_64 -O2 -o "$APP/Contents/MacOS/jj" "$D/jj-launcher.c"
+else
+  echo "  clang not found: falling back to a script executable, which will ask for Rosetta"
+  cp "$D/jj-app.sh" "$APP/Contents/MacOS/jj"
 fi
-JJOUT="$OUT" /usr/bin/osascript -e 'display notification (system attribute "JJOUT") with title "Jack & Jill"'
-APPSH
 chmod +x "$APP/Contents/MacOS/jj"
 cp "$D/applet.icns" "$APP/Contents/Resources/icon.icns"
 printf 'APPL????' > "$APP/Contents/PkgInfo"
@@ -55,6 +57,8 @@ plistlib.dump({
     "CFBundleInfoDictionaryVersion": "6.0", "CFBundlePackageType": "APPL",
     "CFBundleShortVersionString": v, "CFBundleVersion": v,
     "LSMinimumSystemVersion": "11.0", "LSUIElement": True,
+    "LSRequiresNativeExecution": True,
+    "LSArchitecturePriority": ["arm64", "x86_64"],
     "NSHighResolutionCapable": True,
 }, open(sys.argv[1], "wb"))
 INFOPY
