@@ -17,28 +17,30 @@ its 256 cube. That indirection is also what makes one theme follow both grounds.
 
 ## Install
 
+One command. It sets up the theme, the Terminal profiles, the status line, the
+shell palette, git's colours, the Dock toggle and the flashing cursor, and then
+selects the theme so there is nothing to pick afterwards.
+
+```
+curl -fsSL https://raw.githubusercontent.com/heyimjames/jj-brand/main/bootstrap.sh | sh
+```
+
+Then restart Claude Code. That is the whole install.
+
+Add `--no-extras` (`| sh -s -- --no-extras`) to skip the Dock icon and the
+cursor. Everything it touches is backed up, it never overwrites a status line or
+a git colour you have set yourself, and running it twice changes nothing.
+
+### Or as a plugin
+
+The plugin route adds two things the script does not: the `/jj-brand:ground`
+and `/jj-brand:palette` commands, and the Jack & Jill output style. It needs a
+restart before its components appear.
+
 ```
 /plugin marketplace add heyimjames/jj-brand
 /plugin install jj-brand@jack-and-jill
 ```
-
-Then the terminal side, once:
-
-```
-~/.claude/plugins/marketplaces/jack-and-jill/plugins/jj-brand/install.sh --all
-```
-
-(that path is the marketplace clone; `--all` adds the Dock toggle and the flashing cursor)
-
-```
-/theme        # pick "Jack & Jill"
-exec zsh      # for the shell palette
-```
-
-`--all` is the Dock toggle plus the cursor agent; leave it off for just the theme,
-profiles, status line and shell colours. The installer backs up everything it
-touches, keeps any status line you already have, and never overwrites a git colour
-you have set yourself.
 
 ## What you get
 

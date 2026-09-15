@@ -189,7 +189,7 @@ fi
 
 echo
 echo "Next:"
-echo "  1. /theme  ->  Jack & Jill"
+echo "  1. Restart Claude Code (or /theme -> Jack & Jill to pick it now)"
 case "${TERM_PROGRAM:-}" in
   Apple_Terminal) echo "  2. Terminal is already wearing it (new windows too)" ;;
   iTerm.app)      echo "  2. iTerm2: Settings > Profiles > Colors > Import  ->  $DEST/dist/iterm2/" ;;
