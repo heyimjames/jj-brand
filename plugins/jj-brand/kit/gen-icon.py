@@ -34,9 +34,9 @@ CARD = R - 2 * MARGIN
 rad = int(CARD * 0.235)
 COLS, NROWS = 3, 2
 CHIP_RATIO = 4 / 5                      # the studio's own card proportion
-INSET = 122
+INSET = 104
 r = R - 2 * (MARGIN + INSET)
-gapx = r * 0.085
+gapx = r * 0.10
 cw = (r - gapx * (COLS - 1)) / COLS
 chh = cw / CHIP_RATIO
 gapy = cw * 0.16
@@ -55,8 +55,13 @@ def build(ground, hairline, path):
     cells = []
     for ri, row in enumerate(ROWS):
         for ci, name in enumerate(row):
-            x = left + ci * (cw + gapx) + jitter(name, "x") * cw * 0.085
-            y = top + ri * (chh + gapy) + jitter(name, "y") * chh * 0.075
+            # The offsets have to survive the Dock: a tile is ~48px, a chip ~11px,
+            # so the 8% nudge the first version used was under a pixel and the
+            # grid read as perfectly tidy. 20% of a chip is ~2px there, which is
+            # the smallest offset that is actually visible at the size that
+            # matters, and still reads as hand-placed rather than broken.
+            x = left + ci * (cw + gapx) + jitter(name, "x") * cw * 0.20
+            y = top + ri * (chh + gapy) + jitter(name, "y") * chh * 0.17
             cells.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{chh:.1f}" '
                          f'rx="{crad:.1f}" fill="{swatch[name]}"/>')
             cells.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{chh:.1f}" '
