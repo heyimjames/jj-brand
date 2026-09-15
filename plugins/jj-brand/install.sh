@@ -113,9 +113,16 @@ import plistlib, sys
 p = sys.argv[1]; d = plistlib.load(open(p, 'rb'))
 d["LSUIElement"] = True          # a click must not steal focus from Terminal
 d["CFBundleName"] = "Jack & Jill Theme"
+# CFBundleIconName resolves from the ASSET CATALOGUE and takes precedence over
+# CFBundleIconFile, so leaving it set serves osacompile's default applet icon
+# and applet.icns is never consulted. Both it and the catalogue have to go.
+d.pop("CFBundleIconName", None)
 plistlib.dump(d, open(p, 'wb'))
 PY
+  rm -f "$APP/Contents/Resources/Assets.car"
   codesign --force --deep -s - "$APP" >/dev/null 2>&1 || true
+  # LaunchServices caches the icon per bundle; a touch alone is not enough
+  /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP" >/dev/null 2>&1 || true
   /usr/bin/python3 - "$APP" <<'PY'
 import plistlib, subprocess, sys, os
 APP = sys.argv[1]
