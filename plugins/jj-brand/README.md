@@ -31,6 +31,16 @@ Add `--no-extras` (`| sh -s -- --no-extras`) to skip the Dock icon and the
 cursor. Everything it touches is backed up, it never overwrites a status line or
 a git colour you have set yourself, and running it twice changes nothing.
 
+### Taking it off
+
+```
+curl -fsSL https://raw.githubusercontent.com/heyimjames/jj-brand/main/uninstall.sh | sh
+```
+
+Anything with a backup is restored rather than edited. Two things it cannot do
+and says so instead: AppleScript cannot delete a Terminal profile, and git's
+colour names are ordinary settings that may have been yours already.
+
 ### Or as a plugin
 
 The plugin route adds two things the script does not: the `/jj-brand:ground`
