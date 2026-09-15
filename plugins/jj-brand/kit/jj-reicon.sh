@@ -42,7 +42,9 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 # teammate on Intel gets a native launch too. If clang is missing the script
 # stands in and the prompt comes back, which the message says out loud.
 if command -v clang >/dev/null 2>&1; then
-  clang -arch arm64 -arch x86_64 -O2 -o "$APP/Contents/MacOS/jj" "$D/jj-launcher.c"
+  clang -arch arm64 -arch x86_64 -O2 -fobjc-arc \
+        -framework Foundation -framework UserNotifications \
+        -o "$APP/Contents/MacOS/jj" "$D/jj-launcher.m"
 else
   echo "  clang not found: falling back to a script executable, which will ask for Rosetta"
   cp "$D/jj-app.sh" "$APP/Contents/MacOS/jj"
@@ -75,7 +77,14 @@ plistlib.dump({
     "NSHighResolutionCapable": True,
 }, open(sys.argv[1], "wb"))
 INFOPY
-codesign --force --deep -s - "$APP" >/dev/null 2>&1 || true
+# A real identity where one exists: ad-hoc signing is refused by some system
+# services outright, and a Developer ID costs nothing here.
+IDENT=$(security find-identity -v -p codesigning 2>/dev/null | /usr/bin/grep -m1 "Developer ID Application" | sed 's/.*"\(.*\)"/\1/')
+if [ -n "$IDENT" ]; then
+  codesign --force --deep --options runtime -s "$IDENT" "$APP" >/dev/null 2>&1 || true
+else
+  codesign --force --deep -s - "$APP" >/dev/null 2>&1 || true
+fi
 "$LSR" -f "$APP"
 killall Dock 2>/dev/null || true
 echo "icon rebuilt and the Dock's cache cleared (bundle version $VER)"

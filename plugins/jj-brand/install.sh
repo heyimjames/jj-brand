@@ -105,7 +105,9 @@ if [ "$DOCK" -eq 1 ]; then
   # makes macOS ask to install Rosetta, because there is no Mach-O header to
   # read an architecture from and LaunchServices assumes x86_64.
   if command -v clang >/dev/null 2>&1; then
-    clang -arch arm64 -arch x86_64 -O2 -o "$APP/Contents/MacOS/jj" "$DEST/jj-launcher.c"
+    clang -arch arm64 -arch x86_64 -O2 -fobjc-arc \
+          -framework Foundation -framework UserNotifications \
+          -o "$APP/Contents/MacOS/jj" "$DEST/jj-launcher.m"
   else
     say "clang not found (install the Command Line Tools): using a script executable, which asks for Rosetta"
     cp "$DEST/jj-app.sh" "$APP/Contents/MacOS/jj"
@@ -136,7 +138,15 @@ INFOPY
       cp "$DEST/.appicon-build/Assets.car" "$APP/Contents/Resources/Assets.car" && \
       /usr/libexec/PlistBuddy -c "Add :CFBundleIconName string AppIcon" "$APP/Contents/Info.plist" >/dev/null 2>&1
   fi
-  codesign --force --deep -s - "$APP" >/dev/null 2>&1 || true
+  # A real identity where one exists. It does not unlock notifications - macOS
+  # refuses UNUserNotificationCenter for this app either way - but ad-hoc
+  # signing is refused outright by some system services, and this costs nothing.
+  IDENT=$(security find-identity -v -p codesigning 2>/dev/null | /usr/bin/grep -m1 "Developer ID Application" | sed 's/.*"\(.*\)"/\1/')
+  if [ -n "$IDENT" ]; then
+    codesign --force --deep --options runtime -s "$IDENT" "$APP" >/dev/null 2>&1 || true
+  else
+    codesign --force --deep -s - "$APP" >/dev/null 2>&1 || true
+  fi
   rm -rf "$(getconf DARWIN_USER_CACHE_DIR)"com.apple.iconservices* 2>/dev/null || true
   /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP" >/dev/null 2>&1 || true
   /usr/bin/python3 - "$APP" <<'DOCKPY'
